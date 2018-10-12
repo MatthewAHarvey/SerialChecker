@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7eserialchecker',['~SerialChecker',['../class_serial_checker.html#a1ca323a32d359fea2bce35d7612571cb',1,'SerialChecker']]]
+  ['init',['init',['../class_serial_checker.html#a5cbd74025842627773de3db1f4c5d035',1,'SerialChecker']]]
 ];

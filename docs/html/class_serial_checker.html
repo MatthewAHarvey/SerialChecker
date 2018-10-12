@@ -90,11 +90,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a5cbd74025842627773de3db1f4c5d035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a295355c5872140d105d0eb0178c4a00d"><td class="memItemLeft" align="right" valign="top"><a id="a295355c5872140d105d0eb0178c4a00d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a295355c5872140d105d0eb0178c4a00d">disableACKNAK</a> ()</td></tr>
-<tr class="memdesc:a295355c5872140d105d0eb0178c4a00d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables the use of Acknowledge and Naknowledge messages. This really only disables the use of NAK messages. The user must choose to send an ACK with sendACK() command. <br /></td></tr>
+<tr class="memdesc:a295355c5872140d105d0eb0178c4a00d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables the use of Acknowledge and Naknowledge messages. This really only disables the use of NAK messages. The user must choose to send an ACK with <a class="el" href="class_serial_checker.html#ada2e2bf34bda93eac71d7daad31354cc" title="Sends an ACK char followed by the ETX char. ">sendACK()</a> command. <br /></td></tr>
 <tr class="separator:a295355c5872140d105d0eb0178c4a00d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72ba80ea1aba41a503d0907d45049533"><td class="memItemLeft" align="right" valign="top"><a id="a72ba80ea1aba41a503d0907d45049533"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a72ba80ea1aba41a503d0907d45049533">enableACKNAK</a> ()</td></tr>
-<tr class="memdesc:a72ba80ea1aba41a503d0907d45049533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a NAK is returned to the sender. This uses the default ACK and NAK chars, 'A' and 'N'. NAKs get sent when a message does not start with the start char, if use of STX is required, see <a class="el" href="class_serial_checker.html#a0292d1718016ff5377c9c5bd56f80149" title="Enables the use of and STX char at the start of a received message. If requireSTX == false...">enableSTX()</a>. NAKs also get sent if the message is below the minimum length set by setMsgMinLen(). The default for that is two chars. NAKs are also sent if a message is received with an invalid checksum, if <a class="el" href="class_serial_checker.html#ae1b4a8c6e776c5915714c3ed152633cc" title="Enables the checking of checksums. When messages are received, the last char before the ETX char must...">enableChecksum()</a> is used. <br /></td></tr>
+<tr class="memdesc:a72ba80ea1aba41a503d0907d45049533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a NAK is returned to the sender. This uses the default ACK and NAK chars, 'A' and 'N'. NAKs get sent when a message does not start with the start char, if use of STX is required, see <a class="el" href="class_serial_checker.html#a0292d1718016ff5377c9c5bd56f80149" title="Enables the use of and STX char at the start of a received message. If requireSTX == false...">enableSTX()</a>. NAKs also get sent if the message is below the minimum length set by <a class="el" href="class_serial_checker.html#af5f52cf3fa1edefb09080f6057d57fa7" title="Sets the valid message minimum length. Received messages that are shorter than this will be discarded...">setMsgMinLen()</a>. The default for that is two chars. NAKs are also sent if a message is received with an invalid checksum, if <a class="el" href="class_serial_checker.html#ae1b4a8c6e776c5915714c3ed152633cc" title="Enables the checking of checksums. When messages are received, the last char before the ETX char must...">enableChecksum()</a> is used. <br /></td></tr>
 <tr class="separator:a72ba80ea1aba41a503d0907d45049533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8f49684c75e2b88a72535570d2d35ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ac8f49684c75e2b88a72535570d2d35ad">enableACKNAK</a> (char ACK, char NAK)</td></tr>
 <tr class="memdesc:ac8f49684c75e2b88a72535570d2d35ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a NAK is returned to the sender. Here, the ACK and NAK chars are chosen by the user.  <a href="#ac8f49684c75e2b88a72535570d2d35ad">More...</a><br /></td></tr>
@@ -105,77 +105,80 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a84fc2fd193cb378d83641a0ef46e8daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1b4a8c6e776c5915714c3ed152633cc"><td class="memItemLeft" align="right" valign="top"><a id="ae1b4a8c6e776c5915714c3ed152633cc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ae1b4a8c6e776c5915714c3ed152633cc">enableChecksum</a> ()</td></tr>
-<tr class="memdesc:ae1b4a8c6e776c5915714c3ed152633cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables the checking of checksums. When messages are received, the last char before the ETX char must be a checksum char as calculated by the algorithm given in calcChecksum(char* rawMessage). <br /></td></tr>
+<tr class="memdesc:ae1b4a8c6e776c5915714c3ed152633cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables the checking of checksums. When messages are received, the last char before the ETX char must be a checksum char as calculated by the algorithm given in <a class="el" href="class_serial_checker.html#a4f19811058b007d9612c14985dc3286a" title="Calculates the checksum of the null terminated rawMessage array. I can&#39;t remember where I got this al...">calcChecksum(char* rawMessage)</a>. <br /></td></tr>
 <tr class="separator:ae1b4a8c6e776c5915714c3ed152633cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0292d1718016ff5377c9c5bd56f80149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a0292d1718016ff5377c9c5bd56f80149">enableSTX</a> (bool requireSTX)</td></tr>
 <tr class="memdesc:a0292d1718016ff5377c9c5bd56f80149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables the use of and STX char at the start of a received message. If requireSTX == false, presence of an STX char in the received message array will reset the start of the message to the next char. This is useful in case the message received consists of some garbled chars followed by a valid message. If requireSTX == true, then messages will only be valid if an STX char is received. The message is then parsed from that point on. In this case, subsequent STX chars are counted the same as any other message chars and do not reset the start index of the received message. This uses the default STX char which is '$'.  <a href="#a0292d1718016ff5377c9c5bd56f80149">More...</a><br /></td></tr>
 <tr class="separator:a0292d1718016ff5377c9c5bd56f80149"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a2714ca9e5706b4990753fb47cdd21a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a9a2714ca9e5706b4990753fb47cdd21a">enableSTX</a> (bool requireSTX, char STX)</td></tr>
-<tr class="memdesc:a9a2714ca9e5706b4990753fb47cdd21a"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but allows the user to set a new STX char. The ascii char set does contain both an STX and ETX symbol but these are not human readable so serial monitors such as that used by the arduino IDE will not display them. This can make debugging harder.  <a href="#a9a2714ca9e5706b4990753fb47cdd21a">More...</a><br /></td></tr>
+<tr class="memdesc:a9a2714ca9e5706b4990753fb47cdd21a"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but allows the user to set a new STX char. The ascii char set does contain both an STX and ETX symbol but these are not human readable so serial monitors such as that used by the arduino IDE will not display them. This can make debugging harder. The default STX char is '$'.  <a href="#a9a2714ca9e5706b4990753fb47cdd21a">More...</a><br /></td></tr>
 <tr class="separator:a9a2714ca9e5706b4990753fb47cdd21a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d68ae7dcc63103a8669ce28f1aa0069"><td class="memItemLeft" align="right" valign="top"><a id="a0d68ae7dcc63103a8669ce28f1aa0069"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a0d68ae7dcc63103a8669ce28f1aa0069">disableSTX</a> ()</td></tr>
 <tr class="memdesc:a0d68ae7dcc63103a8669ce28f1aa0069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables the use of the STX char at the start of messages. Disabled by default. See <a class="el" href="class_serial_checker.html#a0292d1718016ff5377c9c5bd56f80149" title="Enables the use of and STX char at the start of a received message. If requireSTX == false...">enableSTX()</a> for more details. <br /></td></tr>
 <tr class="separator:a0d68ae7dcc63103a8669ce28f1aa0069"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b39b573b66f4068383f46c4fae08819"><td class="memItemLeft" align="right" valign="top"><a id="a5b39b573b66f4068383f46c4fae08819"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setETX</b> (char ETX)</td></tr>
+<tr class="memitem:a5b39b573b66f4068383f46c4fae08819"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a5b39b573b66f4068383f46c4fae08819">setETX</a> (char ETX)</td></tr>
+<tr class="memdesc:a5b39b573b66f4068383f46c4fae08819"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the ETX char to be used. Serial data is received and the message buffer is filled until the ETX char is received. By default the ETX char is '<br />
+' (newline character). This can be changed at runtime.  <a href="#a5b39b573b66f4068383f46c4fae08819">More...</a><br /></td></tr>
 <tr class="separator:a5b39b573b66f4068383f46c4fae08819"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed2911a79c2373a4314c1a877f54ec97"><td class="memItemLeft" align="right" valign="top"><a id="aed2911a79c2373a4314c1a877f54ec97"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>check</b> ()</td></tr>
+<tr class="memitem:aed2911a79c2373a4314c1a877f54ec97"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97">check</a> ()</td></tr>
+<tr class="memdesc:aed2911a79c2373a4314c1a877f54ec97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call this function as often as you like to check for new messages. Valid messages cause the function to return the length of received message. This is also available by calling getMsgLen(). If no message, or an incomplete message is received, tt transfers the partial message (any message not terminated by an ETX char) from the arduino's serial buffer to this class's message buffer and returns a 0.  <a href="#aed2911a79c2373a4314c1a877f54ec97">More...</a><br /></td></tr>
 <tr class="separator:aed2911a79c2373a4314c1a877f54ec97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8caf3261786fa1c5418402c3c72fe836"><td class="memItemLeft" align="right" valign="top"><a id="a8caf3261786fa1c5418402c3c72fe836"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>getMsg</b> ()</td></tr>
+<tr class="memitem:a8caf3261786fa1c5418402c3c72fe836"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a8caf3261786fa1c5418402c3c72fe836">getMsg</a> ()</td></tr>
+<tr class="memdesc:a8caf3261786fa1c5418402c3c72fe836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the contents of the message buffer. The message buffer is updated if new chars are received by <a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97" title="Call this function as often as you like to check for new messages. Valid messages cause the function ...">check()</a>.  <a href="#a8caf3261786fa1c5418402c3c72fe836">More...</a><br /></td></tr>
 <tr class="separator:a8caf3261786fa1c5418402c3c72fe836"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10f32797f128631baf780380d8c8d90a"><td class="memItemLeft" align="right" valign="top"><a id="a10f32797f128631baf780380d8c8d90a"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>getMsg</b> (uint8_t startIndex)</td></tr>
+<tr class="memitem:a10f32797f128631baf780380d8c8d90a"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a10f32797f128631baf780380d8c8d90a">getMsg</a> (uint8_t startIndex)</td></tr>
+<tr class="memdesc:a10f32797f128631baf780380d8c8d90a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the message starting at index startIndex.  <a href="#a10f32797f128631baf780380d8c8d90a">More...</a><br /></td></tr>
 <tr class="separator:a10f32797f128631baf780380d8c8d90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af49355fbb90691641e60c23e97771f54"><td class="memItemLeft" align="right" valign="top"><a id="af49355fbb90691641e60c23e97771f54"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>getLen</b> ()</td></tr>
 <tr class="separator:af49355fbb90691641e60c23e97771f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5f52cf3fa1edefb09080f6057d57fa7"><td class="memItemLeft" align="right" valign="top"><a id="af5f52cf3fa1edefb09080f6057d57fa7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setMsgMinLen</b> (uint8_t msgMinLen)</td></tr>
+<tr class="memitem:af5f52cf3fa1edefb09080f6057d57fa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#af5f52cf3fa1edefb09080f6057d57fa7">setMsgMinLen</a> (uint8_t msgMinLen)</td></tr>
+<tr class="memdesc:af5f52cf3fa1edefb09080f6057d57fa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the valid message minimum length. Received messages that are shorter than this will be discarded and <a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97" title="Call this function as often as you like to check for new messages. Valid messages cause the function ...">check()</a> will return a 0.  <a href="#af5f52cf3fa1edefb09080f6057d57fa7">More...</a><br /></td></tr>
 <tr class="separator:af5f52cf3fa1edefb09080f6057d57fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89670979931bfe27c51cb2f05080ca38"><td class="memItemLeft" align="right" valign="top"><a id="a89670979931bfe27c51cb2f05080ca38"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>contains</b> (char *snippet, uint8_t startIndex)</td></tr>
+<tr class="memitem:a89670979931bfe27c51cb2f05080ca38"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a89670979931bfe27c51cb2f05080ca38">contains</a> (char *snippet, uint8_t startIndex)</td></tr>
+<tr class="memdesc:a89670979931bfe27c51cb2f05080ca38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check to see if the received message contains a char array starting at startIndex. With this function the user can check to see what type of message has been sent.  <a href="#a89670979931bfe27c51cb2f05080ca38">More...</a><br /></td></tr>
 <tr class="separator:a89670979931bfe27c51cb2f05080ca38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0f3acf460eba2b4e8edf8408c520ca2"><td class="memItemLeft" align="right" valign="top"><a id="ad0f3acf460eba2b4e8edf8408c520ca2"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>contains</b> (const char *snippet)</td></tr>
+<tr class="memitem:ad0f3acf460eba2b4e8edf8408c520ca2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ad0f3acf460eba2b4e8edf8408c520ca2">contains</a> (const char *snippet)</td></tr>
+<tr class="memdesc:ad0f3acf460eba2b4e8edf8408c520ca2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check to see if the received message contains a char array. With this function the user can check to see what type of message has been sent.  <a href="#ad0f3acf460eba2b4e8edf8408c520ca2">More...</a><br /></td></tr>
 <tr class="separator:ad0f3acf460eba2b4e8edf8408c520ca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acebc0acae778b25712e2a4adfef323c9"><td class="memItemLeft" align="right" valign="top"><a id="acebc0acae778b25712e2a4adfef323c9"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>calcChecksum</b> (char *rawMessage, int len)</td></tr>
+<tr class="memitem:acebc0acae778b25712e2a4adfef323c9"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#acebc0acae778b25712e2a4adfef323c9">calcChecksum</a> (char *rawMessage, int len)</td></tr>
+<tr class="memdesc:acebc0acae778b25712e2a4adfef323c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the checksum of the rawMessage array of length len. I can't remember where I got this algorithm from but it produces a checksum char in the human readable asciii charset range of which there are 128 possibilities. Whilst this will not guarantee an error free message, it will hugely reduce the chances of getting a message with an error in it that matches the checksum.  <a href="#acebc0acae778b25712e2a4adfef323c9">More...</a><br /></td></tr>
 <tr class="separator:acebc0acae778b25712e2a4adfef323c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f19811058b007d9612c14985dc3286a"><td class="memItemLeft" align="right" valign="top"><a id="a4f19811058b007d9612c14985dc3286a"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>calcChecksum</b> (char *rawMessage)</td></tr>
+<tr class="memitem:a4f19811058b007d9612c14985dc3286a"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a4f19811058b007d9612c14985dc3286a">calcChecksum</a> (char *rawMessage)</td></tr>
+<tr class="memdesc:a4f19811058b007d9612c14985dc3286a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the checksum of the null terminated rawMessage array. I can't remember where I got this algorithm from but it produces a checksum char in the human readable asciii charset range of which there are 128 possibilities. Whilst this will not guarantee an error free message, it will hugely reduce the chances of getting a message with an error in it that matches the checksum.  <a href="#a4f19811058b007d9612c14985dc3286a">More...</a><br /></td></tr>
 <tr class="separator:a4f19811058b007d9612c14985dc3286a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dde2a0c7106c26ddd0771edd6140a1d"><td class="memItemLeft" align="right" valign="top"><a id="a6dde2a0c7106c26ddd0771edd6140a1d"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>toFloat</b> (uint8_t startIndex)</td></tr>
+<tr class="memitem:a6dde2a0c7106c26ddd0771edd6140a1d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a6dde2a0c7106c26ddd0771edd6140a1d">toFloat</a> (uint8_t startIndex)</td></tr>
+<tr class="memdesc:a6dde2a0c7106c26ddd0771edd6140a1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the message in the message buffer starting at startIndex to a float.  <a href="#a6dde2a0c7106c26ddd0771edd6140a1d">More...</a><br /></td></tr>
 <tr class="separator:a6dde2a0c7106c26ddd0771edd6140a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9588e62490fa959fd94e925baabf6f6a"><td class="memItemLeft" align="right" valign="top"><a id="a9588e62490fa959fd94e925baabf6f6a"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>toFloat</b> ()</td></tr>
+<tr class="memitem:a9588e62490fa959fd94e925baabf6f6a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a9588e62490fa959fd94e925baabf6f6a">toFloat</a> ()</td></tr>
+<tr class="memdesc:a9588e62490fa959fd94e925baabf6f6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the message in the message buffer to a float.  <a href="#a9588e62490fa959fd94e925baabf6f6a">More...</a><br /></td></tr>
 <tr class="separator:a9588e62490fa959fd94e925baabf6f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bdb56558bb9b221bcb5592475e319ae"><td class="memItemLeft" align="right" valign="top"><a id="a1bdb56558bb9b221bcb5592475e319ae"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>toInt8</b> (uint8_t startIndex)</td></tr>
+<tr class="memitem:a1bdb56558bb9b221bcb5592475e319ae"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a1bdb56558bb9b221bcb5592475e319ae">toInt8</a> (uint8_t startIndex)</td></tr>
+<tr class="memdesc:a1bdb56558bb9b221bcb5592475e319ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the message buffer (starting at startIndex) to an int8_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.  <a href="#a1bdb56558bb9b221bcb5592475e319ae">More...</a><br /></td></tr>
 <tr class="separator:a1bdb56558bb9b221bcb5592475e319ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac79ecf0985eac21bb042cb30c5f5d14b"><td class="memItemLeft" align="right" valign="top"><a id="ac79ecf0985eac21bb042cb30c5f5d14b"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>toInt8</b> ()</td></tr>
+<tr class="memitem:ac79ecf0985eac21bb042cb30c5f5d14b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ac79ecf0985eac21bb042cb30c5f5d14b">toInt8</a> ()</td></tr>
+<tr class="memdesc:ac79ecf0985eac21bb042cb30c5f5d14b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the message buffer to an int8_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.  <a href="#ac79ecf0985eac21bb042cb30c5f5d14b">More...</a><br /></td></tr>
 <tr class="separator:ac79ecf0985eac21bb042cb30c5f5d14b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4a588748c10ab8152bd0d9d20c6ef70"><td class="memItemLeft" align="right" valign="top"><a id="ac4a588748c10ab8152bd0d9d20c6ef70"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>toInt16</b> (uint8_t startIndex)</td></tr>
+<tr class="memitem:ac4a588748c10ab8152bd0d9d20c6ef70"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ac4a588748c10ab8152bd0d9d20c6ef70">toInt16</a> (uint8_t startIndex)</td></tr>
+<tr class="memdesc:ac4a588748c10ab8152bd0d9d20c6ef70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the message buffer (starting at startIndex) to an int16_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.  <a href="#ac4a588748c10ab8152bd0d9d20c6ef70">More...</a><br /></td></tr>
 <tr class="separator:ac4a588748c10ab8152bd0d9d20c6ef70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e623a2fa22bafd692e1d5cc934a9644"><td class="memItemLeft" align="right" valign="top"><a id="a0e623a2fa22bafd692e1d5cc934a9644"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>toInt16</b> ()</td></tr>
+<tr class="memitem:a0e623a2fa22bafd692e1d5cc934a9644"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a0e623a2fa22bafd692e1d5cc934a9644">toInt16</a> ()</td></tr>
+<tr class="memdesc:a0e623a2fa22bafd692e1d5cc934a9644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the message buffer to an int16_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.  <a href="#a0e623a2fa22bafd692e1d5cc934a9644">More...</a><br /></td></tr>
 <tr class="separator:a0e623a2fa22bafd692e1d5cc934a9644"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ccb6510b1acd5b1c452768caf6d2b40"><td class="memItemLeft" align="right" valign="top"><a id="a3ccb6510b1acd5b1c452768caf6d2b40"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>toInt32</b> (uint8_t startIndex)</td></tr>
+<tr class="memitem:a3ccb6510b1acd5b1c452768caf6d2b40"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a3ccb6510b1acd5b1c452768caf6d2b40">toInt32</a> (uint8_t startIndex)</td></tr>
+<tr class="memdesc:a3ccb6510b1acd5b1c452768caf6d2b40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the message buffer (starting at startIndex) to an int32_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.  <a href="#a3ccb6510b1acd5b1c452768caf6d2b40">More...</a><br /></td></tr>
 <tr class="separator:a3ccb6510b1acd5b1c452768caf6d2b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a175427240872abedc84e9808713fd4a2"><td class="memItemLeft" align="right" valign="top"><a id="a175427240872abedc84e9808713fd4a2"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>toInt32</b> ()</td></tr>
+<tr class="memitem:a175427240872abedc84e9808713fd4a2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a175427240872abedc84e9808713fd4a2">toInt32</a> ()</td></tr>
+<tr class="memdesc:a175427240872abedc84e9808713fd4a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the message buffer to an int32_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.  <a href="#a175427240872abedc84e9808713fd4a2">More...</a><br /></td></tr>
 <tr class="separator:a175427240872abedc84e9808713fd4a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada2e2bf34bda93eac71d7daad31354cc"><td class="memItemLeft" align="right" valign="top"><a id="ada2e2bf34bda93eac71d7daad31354cc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sendACK</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ada2e2bf34bda93eac71d7daad31354cc">sendACK</a> ()</td></tr>
+<tr class="memdesc:ada2e2bf34bda93eac71d7daad31354cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an ACK char followed by the ETX char. <br /></td></tr>
 <tr class="separator:ada2e2bf34bda93eac71d7daad31354cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8a8e00045c34d92d8409491740b7c6f"><td class="memItemLeft" align="right" valign="top"><a id="ad8a8e00045c34d92d8409491740b7c6f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>sendNAK</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ad8a8e00045c34d92d8409491740b7c6f">sendNAK</a> ()</td></tr>
+<tr class="memdesc:ad8a8e00045c34d92d8409491740b7c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an NAK char followed by the ETX char. <br /></td></tr>
 <tr class="separator:ad8a8e00045c34d92d8409491740b7c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -224,6 +227,162 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sendNAK</b> ()</td></
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="acebc0acae778b25712e2a4adfef323c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acebc0acae778b25712e2a4adfef323c9">&#9670;&nbsp;</a></span>calcChecksum() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char SerialChecker::calcChecksum </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>rawMessage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates the checksum of the rawMessage array of length len. I can't remember where I got this algorithm from but it produces a checksum char in the human readable asciii charset range of which there are 128 possibilities. Whilst this will not guarantee an error free message, it will hugely reduce the chances of getting a message with an error in it that matches the checksum. </p>
+<p>Use this function to generate a checksum of a return message.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">rawMessage</td><td>The message to be sent that needs a checksum. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">len</td><td>The length of the message</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The checksum char. </dd></dl>
+
+</div>
+</div>
+<a id="a4f19811058b007d9612c14985dc3286a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f19811058b007d9612c14985dc3286a">&#9670;&nbsp;</a></span>calcChecksum() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char SerialChecker::calcChecksum </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>rawMessage</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates the checksum of the null terminated rawMessage array. I can't remember where I got this algorithm from but it produces a checksum char in the human readable asciii charset range of which there are 128 possibilities. Whilst this will not guarantee an error free message, it will hugely reduce the chances of getting a message with an error in it that matches the checksum. </p>
+<p>Use this function to generate a checksum of a return message.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rawMessage</td><td>The message to be sent that needs a checksum.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The checksum char. </dd></dl>
+
+</div>
+</div>
+<a id="aed2911a79c2373a4314c1a877f54ec97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed2911a79c2373a4314c1a877f54ec97">&#9670;&nbsp;</a></span>check()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t SerialChecker::check </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Call this function as often as you like to check for new messages. Valid messages cause the function to return the length of received message. This is also available by calling getMsgLen(). If no message, or an incomplete message is received, tt transfers the partial message (any message not terminated by an ETX char) from the arduino's serial buffer to this class's message buffer and returns a 0. </p>
+<p>If the message is too long or below the minimum length, it returns a 0 and deletes the message.</p>
+<p>If enableSTX(false) is used, a start STX char is not required, but if one is received, any previous received chars will be delected. This is useful to discard partial or garbled messages. If enableSTX(true) is used, a received message must begin with an STX char. Subsequent STX chars in this case will be counted as valid message body chars. it restarts the message if a it If an incomplete message is sitting in the serial buffer, this function will append it to this class's message buffer. Once an ETX end char is received (default is newline '<br />
+' char), the message is checked This is the main function.</p>
+<p>By default, the class does not use checksums but if <a class="el" href="class_serial_checker.html#ae1b4a8c6e776c5915714c3ed152633cc" title="Enables the checking of checksums. When messages are received, the last char before the ETX char must...">enableChecksum()</a> is used, the char preceding the ETX char must be a checksum char. A local checksum is calculated from the rest of the message and compared with the received checksum. If valid, the message length is returned, else a 0.</p>
+<p>If <a class="el" href="class_serial_checker.html#a72ba80ea1aba41a503d0907d45049533" title="Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a NAK...">enableACKNAK()</a> is used, the check function will send back NAK chars in the event that the message received is not valid based on the above explained conditions. It is left to the user to send back ACK messages if they are needed using <a class="el" href="class_serial_checker.html#ada2e2bf34bda93eac71d7daad31354cc" title="Sends an ACK char followed by the ETX char. ">sendACK()</a>. For example, a message might be received that sets a parameter. It might not make sense to send this back to the other device but sending an ACK char would notify the device that its message was received and successfully implemented. On the other hand, <a class="el" href="class_serial_checker.html#ad8a8e00045c34d92d8409491740b7c6f" title="Sends an NAK char followed by the ETX char. ">sendNAK()</a> can be used if the received set parameter is out of the allowed set range for example.</p>
+<dl class="section return"><dt>Returns</dt><dd>A uint8_t value is returned representing the length of the message received, excluding the STX start char if used, the checksum char if used, or the ETX end char. </dd></dl>
+
+</div>
+</div>
+<a id="a89670979931bfe27c51cb2f05080ca38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89670979931bfe27c51cb2f05080ca38">&#9670;&nbsp;</a></span>contains() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SerialChecker::contains </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>snippet</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>startIndex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check to see if the received message contains a char array starting at startIndex. With this function the user can check to see what type of message has been sent. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">snippet</td><td>The snippet char array to be compared.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns true if the snippet test char array is present and false if not. </dd></dl>
+
+</div>
+</div>
+<a id="ad0f3acf460eba2b4e8edf8408c520ca2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0f3acf460eba2b4e8edf8408c520ca2">&#9670;&nbsp;</a></span>contains() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SerialChecker::contains </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>snippet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check to see if the received message contains a char array. With this function the user can check to see what type of message has been sent. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">snippet</td><td>The snippet char array to be compared.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns true if the snippet test char array is present and false if not. </dd></dl>
+
+</div>
+</div>
 <a id="ac8f49684c75e2b88a72535570d2d35ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac8f49684c75e2b88a72535570d2d35ad">&#9670;&nbsp;</a></span>enableACKNAK()</h2>
 
@@ -253,8 +412,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sendNAK</b> ()</td></
 <p>Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a NAK is returned to the sender. Here, the ACK and NAK chars are chosen by the user. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">ACK</td><td>The acknowledgement char to be sent by sendACK(). </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">NAK</td><td>The naknowledgement char to be sent on receipt of invalid message or when sendNAK() is called. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ACK</td><td>The acknowledgement char to be sent by <a class="el" href="class_serial_checker.html#ada2e2bf34bda93eac71d7daad31354cc" title="Sends an ACK char followed by the ETX char. ">sendACK()</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">NAK</td><td>The naknowledgement char to be sent on receipt of invalid message or when <a class="el" href="class_serial_checker.html#ad8a8e00045c34d92d8409491740b7c6f" title="Sends an NAK char followed by the ETX char. ">sendNAK()</a> is called. </td></tr>
   </table>
   </dd>
 </dl>
@@ -313,14 +472,302 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sendNAK</b> ()</td></
       </table>
 </div><div class="memdoc">
 
-<p>As above but allows the user to set a new STX char. The ascii char set does contain both an STX and ETX symbol but these are not human readable so serial monitors such as that used by the arduino IDE will not display them. This can make debugging harder. </p>
+<p>As above but allows the user to set a new STX char. The ascii char set does contain both an STX and ETX symbol but these are not human readable so serial monitors such as that used by the arduino IDE will not display them. This can make debugging harder. The default STX char is '$'. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">requireSTX</td><td>The require stx </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">STX</td><td>The STX char to be used. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">requireSTX</td><td>A flag to enforce the use of starting a message with the STX symbol. If true, messages must start with STX. If false, messages can optionally use STX at the start. If an STX is found part way through the message though, the preceding chars will be discarded. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">STX</td><td>The STX char to be used. Default is '$'. </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8caf3261786fa1c5418402c3c72fe836"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8caf3261786fa1c5418402c3c72fe836">&#9670;&nbsp;</a></span>getMsg() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * SerialChecker::getMsg </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the contents of the message buffer. The message buffer is updated if new chars are received by <a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97" title="Call this function as often as you like to check for new messages. Valid messages cause the function ...">check()</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>The message buffer which is null terminated. </dd></dl>
+
+</div>
+</div>
+<a id="a10f32797f128631baf780380d8c8d90a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10f32797f128631baf780380d8c8d90a">&#9670;&nbsp;</a></span>getMsg() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * SerialChecker::getMsg </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>startIndex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the message starting at index startIndex. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">startIndex</td><td>The start index</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The null terminated message starting at index startIndex. </dd></dl>
+
+</div>
+</div>
+<a id="a5b39b573b66f4068383f46c4fae08819"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b39b573b66f4068383f46c4fae08819">&#9670;&nbsp;</a></span>setETX()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::setETX </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>ETX</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the ETX char to be used. Serial data is received and the message buffer is filled until the ETX char is received. By default the ETX char is '<br />
+' (newline character). This can be changed at runtime. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ETX</td><td>The etx </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af5f52cf3fa1edefb09080f6057d57fa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5f52cf3fa1edefb09080f6057d57fa7">&#9670;&nbsp;</a></span>setMsgMinLen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::setMsgMinLen </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>msgMinLen</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the valid message minimum length. Received messages that are shorter than this will be discarded and <a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97" title="Call this function as often as you like to check for new messages. Valid messages cause the function ...">check()</a> will return a 0. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">msgMinLen</td><td>The message minimum valid length </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6dde2a0c7106c26ddd0771edd6140a1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dde2a0c7106c26ddd0771edd6140a1d">&#9670;&nbsp;</a></span>toFloat() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SerialChecker::toFloat </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>startIndex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts the message in the message buffer starting at startIndex to a float. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">startIndex</td><td>The start indexc</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the float value that has been converted. </dd></dl>
+
+</div>
+</div>
+<a id="a9588e62490fa959fd94e925baabf6f6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9588e62490fa959fd94e925baabf6f6a">&#9670;&nbsp;</a></span>toFloat() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SerialChecker::toFloat </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts the message in the message buffer to a float. </p>
+<dl class="section return"><dt>Returns</dt><dd>the converted float value </dd></dl>
+
+</div>
+</div>
+<a id="ac4a588748c10ab8152bd0d9d20c6ef70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4a588748c10ab8152bd0d9d20c6ef70">&#9670;&nbsp;</a></span>toInt16() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t SerialChecker::toInt16 </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>startIndex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts the message buffer (starting at startIndex) to an int16_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">startIndex</td><td>The start index</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the converted int16_t </dd></dl>
+
+</div>
+</div>
+<a id="a0e623a2fa22bafd692e1d5cc934a9644"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e623a2fa22bafd692e1d5cc934a9644">&#9670;&nbsp;</a></span>toInt16() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t SerialChecker::toInt16 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts the message buffer to an int16_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type. </p>
+<dl class="section return"><dt>Returns</dt><dd>the converted int16_t </dd></dl>
+
+</div>
+</div>
+<a id="a3ccb6510b1acd5b1c452768caf6d2b40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ccb6510b1acd5b1c452768caf6d2b40">&#9670;&nbsp;</a></span>toInt32() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SerialChecker::toInt32 </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>startIndex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts the message buffer (starting at startIndex) to an int32_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">startIndex</td><td>The start index</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the converted int32_t </dd></dl>
+
+</div>
+</div>
+<a id="a175427240872abedc84e9808713fd4a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a175427240872abedc84e9808713fd4a2">&#9670;&nbsp;</a></span>toInt32() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SerialChecker::toInt32 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts the message buffer to an int32_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type. </p>
+<dl class="section return"><dt>Returns</dt><dd>the converted int32_t </dd></dl>
+
+</div>
+</div>
+<a id="a1bdb56558bb9b221bcb5592475e319ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bdb56558bb9b221bcb5592475e319ae">&#9670;&nbsp;</a></span>toInt8() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t SerialChecker::toInt8 </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>startIndex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts the message buffer (starting at startIndex) to an int8_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">startIndex</td><td>The start index</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the converted int8_t </dd></dl>
+
+</div>
+</div>
+<a id="ac79ecf0985eac21bb042cb30c5f5d14b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac79ecf0985eac21bb042cb30c5f5d14b">&#9670;&nbsp;</a></span>toInt8() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t SerialChecker::toInt8 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts the message buffer to an int8_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type. </p>
+<dl class="section return"><dt>Returns</dt><dd>the converted int8_t </dd></dl>
 
 </div>
 </div>

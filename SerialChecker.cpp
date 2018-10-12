@@ -92,10 +92,10 @@ void SerialChecker::enableSTX(bool requireSTX){
 }
 
 /**
- * @brief      As above but allows the user to set a new STX char. The ascii char set does contain both an STX and ETX symbol but these are not human readable so serial monitors such as that used by the arduino IDE will not display them. This can make debugging harder.
+ * @brief      As above but allows the user to set a new STX char. The ascii char set does contain both an STX and ETX symbol but these are not human readable so serial monitors such as that used by the arduino IDE will not display them. This can make debugging harder. The default STX char is '$'.
  *
- * @param[in]  requireSTX  The require stx
- * @param[in]  STX         The STX char to be used. 
+ * @param[in]  requireSTX  A flag to enforce the use of starting a message with the STX symbol. If true, messages must start with STX. If false, messages can optionally use STX at the start. If an STX is found part way through the message though, the preceding chars will be discarded.
+ * @param[in]  STX         The STX char to be used. Default is '$'.
  */
 void SerialChecker::enableSTX(bool requireSTX, char STX){
     useSTX = true;
@@ -106,6 +106,7 @@ void SerialChecker::enableSTX(bool requireSTX, char STX){
     this->STX = STX;
 }
 
+
 /**
  * @brief      Disables the use of the STX char at the start of messages. Disabled by default. See enableSTX() for more details.
  */
@@ -114,10 +115,28 @@ void SerialChecker::disableSTX(){
     requireSTX = false;
 }
 
+/**
+ * @brief      Sets the ETX char to be used. Serial data is received and the message buffer is filled until the ETX char is received. By default the ETX char is '\n' (newline character). This can be changed at runtime.
+ *
+ * @param[in]  ETX   The etx
+ */
 void SerialChecker::setETX(char ETX){
     this->ETX = ETX;
 }
 
+/**
+ * @brief      Call this function as often as you like to check for new messages. Valid messages cause the function to return the length of received message. This is also available by calling getMsgLen(). If no message, or an incomplete message is received, tt transfers the partial message (any message not terminated by an ETX char) from the arduino's serial buffer to this class's message buffer and returns a 0. 
+ * 
+ * If the message is too long or below the minimum length, it returns a 0 and deletes the message. 
+ * 
+ * If enableSTX(false) is used, a start STX char is not required, but if one is received, any previous received chars will be delected. This is useful to discard partial or garbled messages. If enableSTX(true) is used, a received message must begin with an STX char. Subsequent STX chars in this case will be counted as valid message body chars. it restarts the message if a it If an incomplete message is sitting in the serial buffer, this function will append it to this class's message buffer. Once an ETX end char is received (default is newline '\n' char), the message is checked This is the main function. 
+ * 
+ * By default, the class does not use checksums but if enableChecksum() is used, the char preceding the ETX char must be a checksum char. A local checksum is calculated from the rest of the message and compared with the received checksum. If valid, the message length is returned, else a 0.
+ * 
+ * If enableACKNAK() is used, the check function will send back NAK chars in the event that the message received is not valid based on the above explained conditions. It is left to the user to send back ACK messages if they are needed using sendACK(). For example, a message might be received that sets a parameter. It might not make sense to send this back to the other device but sending an ACK char would notify the device that its message was received and successfully implemented. On the other hand, sendNAK() can be used if the received set parameter is out of the allowed set range for example. 
+ *
+ * @return     A uint8_t value is returned representing the length of the message received, excluding the STX start char if used, the checksum char if used, or the ETX end char.
+ */
 uint8_t SerialChecker::check(){
     while(HSerial->available()) {
         char in = HSerial->read();
@@ -195,28 +214,75 @@ uint8_t SerialChecker::check(){
     return 0;
 }
 
+/**
+ * @brief      Gets the contents of the message buffer. The message buffer is updated if new chars are received by check().
+ *
+ * @return     The message buffer which is null terminated.
+ */
 char* SerialChecker::getMsg(){
     return message;
 }
 
+/**
+ * @brief      Gets the message starting at index startIndex.
+ *
+ * @param[in]  startIndex  The start index
+ *
+ * @return     The null terminated message starting at index startIndex.
+ */
 char* SerialChecker::getMsg(uint8_t startIndex){
     return &message[startIndex];
 }
 
-uint8_t SerialChecker::getLen(){
+/**
+ * @brief      Gets the length of the message in the message buffer.
+ *
+ * @return     The message length.
+ */
+uint8_t SerialChecker::getMsgLen(){
     return msgLen;
 }
 
+/**
+ * @brief      Sets the valid message minimum length. Received messages that are shorter than this will be discarded and check() will return a 0.
+ *
+ * @param[in]  msgMinLen  The message minimum valid length
+ */
 void SerialChecker::setMsgMinLen(uint8_t msgMinLen){
     this->msgMinLen = msgMinLen;
 }
 
+/**
+ * @brief      Check to see if the received message contains a char array starting at startIndex. With this function the user can check to see what type of message has been sent.
+ *
+ * @param[in]  snippet  The snippet char array to be compared.
+ *
+ * @return     Returns true if the snippet test char array is present and false if not.
+ */
 bool SerialChecker::contains(char* snippet, uint8_t startIndex){
-
+    // check if the shippet is present starting at index startIndex.
+    // snippet char array must be null terminated.
+    const uint8_t startIndex = startIndex;
+    int i = 0;
+    const char* p = snippet;
+    while(*p){
+        if(*p != message[startIndex + i++]){
+            return false;
+        }
+        p++;
+    }
+    return true;
 }
 
+/**
+ * @brief      Check to see if the received message contains a char array. With this function the user can check to see what type of message has been sent.
+ *
+ * @param[in]  snippet  The snippet char array to be compared.
+ *
+ * @return     Returns true if the snippet test char array is present and false if not.
+ */
 bool SerialChecker::contains(const char* snippet){
-    // check if the shippet is present starting at index startIndex.
+    // check if the shippet is present starting at index 0.
     // snippet char array must be null terminated.
     const uint8_t startIndex = 0;
     int i = 0;
@@ -230,6 +296,16 @@ bool SerialChecker::contains(const char* snippet){
     return true;
 }
 
+/**
+ * @brief      Calculates the checksum of the rawMessage array of length len. I can't remember where I got this algorithm from but it produces a checksum char in the human readable asciii charset range of which there are 128 possibilities. Whilst this will not guarantee an error free message, it will hugely reduce the chances of getting a message with an error in it that matches the checksum.
+ * 
+ * Use this function to generate a checksum of a return message.
+ *
+ * @param      rawMessage  The message to be sent that needs a checksum.
+ * @param[in]  len         The length of the message
+ *
+ * @return     The checksum char.
+ */
 char SerialChecker::calcChecksum(char* rawMessage, int len){
     uint16_t checksum=0;
     for(uint8_t i = 0; i < len; i++)
@@ -243,6 +319,16 @@ char SerialChecker::calcChecksum(char* rawMessage, int len){
     return (char) checksum;
 }
 
+
+/**
+ * @brief      Calculates the checksum of the null terminated rawMessage array. I can't remember where I got this algorithm from but it produces a checksum char in the human readable asciii charset range of which there are 128 possibilities. Whilst this will not guarantee an error free message, it will hugely reduce the chances of getting a message with an error in it that matches the checksum.
+ * 
+ * Use this function to generate a checksum of a return message.
+ *
+ * @param      rawMessage  The message to be sent that needs a checksum.
+ *
+ * @return     The checksum char.
+ */
 char SerialChecker::calcChecksum(char* rawMessage){
     uint16_t checksum=0;
     while(*rawMessage){
@@ -256,6 +342,13 @@ char SerialChecker::calcChecksum(char* rawMessage){
     return (char) checksum;
 }
 
+/**
+ * @brief      Converts the message in the message buffer starting at startIndex to a float
+ *
+ * @param[in]  startIndex  The start indexc
+ *
+ * @return     the float value that has been converted.
+ */
 float SerialChecker::toFloat(uint8_t startIndex){
     // Returns the number stored in a char array, starting at startIndex
     float number = 0;
@@ -288,6 +381,11 @@ float SerialChecker::toFloat(uint8_t startIndex){
     return number;
 }
 
+/**
+ * @brief      Converts the message in the message buffer to a float
+ *
+ * @return     the converted float value
+ */
 float SerialChecker::toFloat(){
     uint8_t number = 0;
     bool negative = false;
@@ -302,6 +400,13 @@ float SerialChecker::toFloat(){
     return toFloat(startIndex);
 }
 
+/**
+ * @brief      Converts the message buffer (starting at startIndex) to an int8_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.
+ *
+ * @param[in]  startIndex  The start index
+ *
+ * @return     the converted int8_t
+ */
 uint8_t SerialChecker::toInt8(uint8_t startIndex){
     // Returns the number stored in a char array, starting at startIndex
     uint8_t number = 0;
@@ -321,6 +426,11 @@ uint8_t SerialChecker::toInt8(uint8_t startIndex){
     return number;
 }
 
+/**
+ * @brief      Converts the message buffer to an int8_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.
+ *
+ * @return     the converted int8_t
+ */
 uint8_t SerialChecker::toInt8(){
     // Returns the number stored in a char array, starting at startIndex
     uint8_t number = 0;
@@ -336,6 +446,13 @@ uint8_t SerialChecker::toInt8(){
     return toInt8(startIndex);
 }
 
+/**
+ * @brief      Converts the message buffer (starting at startIndex) to an int16_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.
+ *
+ * @param[in]  startIndex  The start index
+ *
+ * @return     the converted int16_t
+ */
 uint16_t SerialChecker::toInt16(uint8_t startIndex){
     // Returns the number stored in a char array, starting at startIndex
     uint16_t number = 0;
@@ -355,6 +472,11 @@ uint16_t SerialChecker::toInt16(uint8_t startIndex){
     return number;
 }
 
+/**
+ * @brief      Converts the message buffer to an int16_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.
+ *
+ * @return     the converted int16_t
+ */
 uint16_t SerialChecker::toInt16(){
     // Returns the number stored in a char array, starting at startIndex
     uint8_t startIndex = 0;
@@ -368,33 +490,13 @@ uint16_t SerialChecker::toInt16(){
     return toInt16(startIndex);
 }
 
-// uint16_t SerialChecker::toInt16(){
-//     // Returns the number stored in a char array, starting at startIndex
-//     uint16_t number = 0;
-//     bool negative = false;
-//     uint8_t startIndex = 0;
-//     while(message[startIndex]){
-//         if((message[startIndex] == '-') || 
-//             (message[startIndex] >= '0' && message[startIndex] <= '9')){
-//             break;
-//         }
-//         startIndex++;
-//     }
-//     if( message[startIndex] == '-'){
-//         negative = true;
-//         startIndex++;
-//     }
-//     for(int i = startIndex; i < msgLen; i++) 
-//     {
-//         number *= 10;
-//         number += (message[i] -'0');
-//     }
-//     if(negative){
-//         number *= -1;
-//     }
-//     return number;
-// }
-
+/**
+ * @brief      Converts the message buffer (starting at startIndex) to an int32_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.
+ *
+ * @param[in]  startIndex  The start index
+ *
+ * @return     the converted int32_t
+ */
 uint32_t SerialChecker::toInt32(uint8_t startIndex){
     // Returns the number stored in a char array, starting at startIndex
     uint32_t number = 0;
@@ -414,6 +516,11 @@ uint32_t SerialChecker::toInt32(uint8_t startIndex){
     return number;
 }
 
+/**
+ * @brief      Converts the message buffer to an int32_t. This works for both unsigned and signed ints as long as the container it is loaded in to is of the correct type.
+ *
+ * @return     the converted int32_t
+ */
 uint32_t SerialChecker::toInt32(){
     // Returns the number stored in a char array, starting at startIndex
     uint32_t number = 0;
@@ -429,10 +536,16 @@ uint32_t SerialChecker::toInt32(){
     return toInt32(startIndex);
 }
 
+/**
+ * @brief      Sends an ACK char followed by the ETX char.
+ */
 void SerialChecker::sendACK(){
     HSerial->println(ACK);
 }
 
+/**
+ * @brief      Sends an NAK char followed by the ETX char.
+ */
 void SerialChecker::sendNAK(){
     HSerial->println(NAK);
 }

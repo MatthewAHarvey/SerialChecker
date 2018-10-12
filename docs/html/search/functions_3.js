@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['serialchecker',['SerialChecker',['../class_serial_checker.html#a7f23a95e895512932a0d88a0ba5af974',1,'SerialChecker::SerialChecker()'],['../class_serial_checker.html#aed7c7c73e206eec95c45dc944c673345',1,'SerialChecker::SerialChecker(uint16_t msgMaxLen, HardwareSerial &amp;HSerial, uint32_t baudrate)']]]
+  ['getmsg',['getMsg',['../class_serial_checker.html#a8caf3261786fa1c5418402c3c72fe836',1,'SerialChecker::getMsg()'],['../class_serial_checker.html#a10f32797f128631baf780380d8c8d90a',1,'SerialChecker::getMsg(uint8_t startIndex)']]]
 ];

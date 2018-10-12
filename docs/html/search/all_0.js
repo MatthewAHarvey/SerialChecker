@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['disableacknak',['disableACKNAK',['../class_serial_checker.html#a295355c5872140d105d0eb0178c4a00d',1,'SerialChecker']]],
-  ['disablechecksum',['disableChecksum',['../class_serial_checker.html#a84fc2fd193cb378d83641a0ef46e8daa',1,'SerialChecker']]],
-  ['disablestx',['disableSTX',['../class_serial_checker.html#a0d68ae7dcc63103a8669ce28f1aa0069',1,'SerialChecker']]]
+  ['calcchecksum',['calcChecksum',['../class_serial_checker.html#acebc0acae778b25712e2a4adfef323c9',1,'SerialChecker::calcChecksum(char *rawMessage, int len)'],['../class_serial_checker.html#a4f19811058b007d9612c14985dc3286a',1,'SerialChecker::calcChecksum(char *rawMessage)']]],
+  ['check',['check',['../class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97',1,'SerialChecker']]],
+  ['contains',['contains',['../class_serial_checker.html#a89670979931bfe27c51cb2f05080ca38',1,'SerialChecker::contains(char *snippet, uint8_t startIndex)'],['../class_serial_checker.html#ad0f3acf460eba2b4e8edf8408c520ca2',1,'SerialChecker::contains(const char *snippet)']]]
 ];
