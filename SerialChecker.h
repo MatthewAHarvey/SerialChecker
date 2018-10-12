@@ -41,6 +41,7 @@ public:
     char* getMsg();
     char* getMsg(uint8_t startIndex);
     uint8_t getLen();
+    void setMsgMinLen(uint8_t msgMinLen);
     bool contains(char* snippet, uint8_t startIndex);
     bool contains(const char* snippet);
     char calcChecksum(char* rawMessage, int len);

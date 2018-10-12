@@ -1,10 +1,21 @@
 #include "SerialChecker.h"
 
+
+/**
+ * @brief      Constructs the object. Dynamically creates a char array to hold message buffers. Assigns the the default arduino serial port. 
+ */
 SerialChecker::SerialChecker(){
     message = new char[msgMaxLen];
     this->HSerial = &Serial;
 }
 
+/**
+ * @brief      Constructs the object. As above but lets user choose serial port and baudrate.
+ *
+ * @param[in]  msgMaxLen  The message maximum length
+ * @param      HSerial    The serial port. Can be Serial, Serial1, Serial2, Serial3 for an Arduino Mega (Atmega 2560).
+ * @param[in]  baudrate   The baudrate
+ */
 SerialChecker::SerialChecker(uint16_t msgMaxLen, HardwareSerial& HSerial, uint32_t baudrate){
     this->msgMaxLen = msgMaxLen;
     this->HSerial = &HSerial;
@@ -12,37 +23,66 @@ SerialChecker::SerialChecker(uint16_t msgMaxLen, HardwareSerial& HSerial, uint32
     message = new char[msgMaxLen];
 }
 
+/**
+ * @brief      Destroys the object and frees the memory used by message buffer
+ */
 SerialChecker::~SerialChecker(){
     delete [] message;
 }
 
+/**
+ * @brief      This is functionally the same as Serial.begin(baudrate);
+ */
 void SerialChecker::init(){
     HSerial->begin(baudrate); 
     // HSerial->println("Connected to SerialChecker test.");
 }
 
+/**
+ * @brief      Disables the use of Acknowledge and Naknowledge messages. This really only disables the use of NAK messages. The user must choose to send an ACK with sendACK() command.
+ */
 void SerialChecker::disableACKNAK(){
     useACKNAK = false;
 }
 
+/**
+ * @brief      Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a NAK is returned to the sender. This uses the default ACK and NAK chars, 'A' and 'N'. NAKs get sent when a message does not start with the start char, if use of STX is required, see enableSTX(). NAKs also get sent if the message is below the minimum length set by setMsgMinLen(). The default for that is two chars. NAKs are also sent if a message is received with an invalid checksum, if enableChecksum() is used.
+ */
 void SerialChecker::enableACKNAK(){
     useACKNAK = true;
 }
 
+/**
+ * @brief      Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a NAK is returned to the sender. Here, the ACK and NAK chars are chosen by the user.
+ *
+ * @param[in]  ACK   The acknowledgement char to be sent by sendACK().
+ * @param[in]  NAK   The naknowledgement char to be sent on receipt of invalid message or when sendNAK() is called.
+ */
 void SerialChecker::enableACKNAK(char ACK, char NAK){
     useACKNAK = true;
     this->ACK = ACK;
     this->NAK = NAK;
 }
 
+/**
+ * @brief      Disables the checking of checksums.
+ */
 void SerialChecker::disableChecksum(){
     useChecksum = false;
 }
 
+/**
+ * @brief      Enables the checking of checksums. When messages are received, the last char before the ETX char must be a checksum char as calculated by the algorithm given in calcChecksum(char* rawMessage).
+ */
 void SerialChecker::enableChecksum(){
     useChecksum = true;
 }
 
+/**
+ * @brief      Enables the use of and STX char at the start of a received message. If requireSTX == false, presence of an STX char in the received message array will reset the start of the message to the next char. This is useful in case the message received consists of some garbled chars followed by a valid message. If requireSTX == true, then messages will only be valid if an STX char is received. The message is then parsed from that point on. In this case, subsequent STX chars are counted the same as any other message chars and do not reset the start index of the received message. This uses the default STX char which is '$'.
+ *
+ * @param[in]  requireSTX  A flag to enforce the use of starting a message with the STX symbol. If true, messages must start with STX. If false, messages can optionally use STX at the start. If an STX is found part way through the message though, the preceding chars will be discarded. 
+ */
 void SerialChecker::enableSTX(bool requireSTX){
     useSTX = true;
     this->requireSTX = requireSTX;
@@ -51,6 +91,12 @@ void SerialChecker::enableSTX(bool requireSTX){
     }
 }
 
+/**
+ * @brief      As above but allows the user to set a new STX char. The ascii char set does contain both an STX and ETX symbol but these are not human readable so serial monitors such as that used by the arduino IDE will not display them. This can make debugging harder.
+ *
+ * @param[in]  requireSTX  The require stx
+ * @param[in]  STX         The STX char to be used. 
+ */
 void SerialChecker::enableSTX(bool requireSTX, char STX){
     useSTX = true;
     this->requireSTX = requireSTX;
@@ -60,6 +106,9 @@ void SerialChecker::enableSTX(bool requireSTX, char STX){
     this->STX = STX;
 }
 
+/**
+ * @brief      Disables the use of the STX char at the start of messages. Disabled by default. See enableSTX() for more details.
+ */
 void SerialChecker::disableSTX(){
     useSTX = false;
     requireSTX = false;
@@ -156,6 +205,10 @@ char* SerialChecker::getMsg(uint8_t startIndex){
 
 uint8_t SerialChecker::getLen(){
     return msgLen;
+}
+
+void SerialChecker::setMsgMinLen(uint8_t msgMinLen){
+    this->msgMinLen = msgMinLen;
 }
 
 bool SerialChecker::contains(char* snippet, uint8_t startIndex){
