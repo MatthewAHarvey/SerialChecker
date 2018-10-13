@@ -4,6 +4,14 @@
 #include<arduino.h>
 #include<HardwareSerial.h>
 
+/** 
+ *  SerialChecker can be used to check incoming messages  
+ */
+
+/**
+ * @brief      SerialChecker is an Arduino based class for easy handling of serial messages.
+ *              SerialChecker can be used to check incoming messages  
+ */
 class SerialChecker{
 private:
     uint32_t baudrate = 250000;
@@ -40,7 +48,7 @@ public:
     uint8_t check();
     char* getMsg();
     char* getMsg(uint8_t startIndex);
-    uint8_t getLen();
+    uint8_t getMsgLen();
     void setMsgMinLen(uint8_t msgMinLen);
     bool contains(char* snippet, uint8_t startIndex);
     bool contains(const char* snippet);

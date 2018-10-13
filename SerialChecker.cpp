@@ -1,6 +1,5 @@
 #include "SerialChecker.h"
 
-
 /**
  * @brief      Constructs the object. Dynamically creates a char array to hold message buffers. Assigns the the default arduino serial port. 
  */
@@ -262,7 +261,6 @@ void SerialChecker::setMsgMinLen(uint8_t msgMinLen){
 bool SerialChecker::contains(char* snippet, uint8_t startIndex){
     // check if the shippet is present starting at index startIndex.
     // snippet char array must be null terminated.
-    const uint8_t startIndex = startIndex;
     int i = 0;
     const char* p = snippet;
     while(*p){

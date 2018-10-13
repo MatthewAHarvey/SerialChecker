@@ -12,7 +12,7 @@ void loop(){
     delay(100);
     int len = sc.check();
     if(len){
-        Serial.print(sc.getLen());
+        Serial.print(sc.getMsgLen());
         Serial.print(", ");
         Serial.print(len);
         Serial.print(", ");

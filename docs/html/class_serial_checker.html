@@ -71,6 +71,10 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p><a class="el" href="class_serial_checker.html" title="SerialChecker is an Arduino based class for easy handling of serial messages. SerialChecker can be us...">SerialChecker</a> is an Arduino based class for easy handling of serial messages. <a class="el" href="class_serial_checker.html" title="SerialChecker is an Arduino based class for easy handling of serial messages. SerialChecker can be us...">SerialChecker</a> can be used to check incoming messages <br />
+  
+ <a href="class_serial_checker.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_serial_checker_8h_source.html">SerialChecker.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -116,7 +120,7 @@ Public Member Functions</h2></td></tr>
 ' (newline character). This can be changed at runtime.  <a href="#a5b39b573b66f4068383f46c4fae08819">More...</a><br /></td></tr>
 <tr class="separator:a5b39b573b66f4068383f46c4fae08819"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed2911a79c2373a4314c1a877f54ec97"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97">check</a> ()</td></tr>
-<tr class="memdesc:aed2911a79c2373a4314c1a877f54ec97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call this function as often as you like to check for new messages. Valid messages cause the function to return the length of received message. This is also available by calling getMsgLen(). If no message, or an incomplete message is received, tt transfers the partial message (any message not terminated by an ETX char) from the arduino's serial buffer to this class's message buffer and returns a 0.  <a href="#aed2911a79c2373a4314c1a877f54ec97">More...</a><br /></td></tr>
+<tr class="memdesc:aed2911a79c2373a4314c1a877f54ec97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call this function as often as you like to check for new messages. Valid messages cause the function to return the length of received message. This is also available by calling <a class="el" href="class_serial_checker.html#a1598a726060029ba9dc2c7923f25e59e" title="Gets the length of the message in the message buffer. ">getMsgLen()</a>. If no message, or an incomplete message is received, tt transfers the partial message (any message not terminated by an ETX char) from the arduino's serial buffer to this class's message buffer and returns a 0.  <a href="#aed2911a79c2373a4314c1a877f54ec97">More...</a><br /></td></tr>
 <tr class="separator:aed2911a79c2373a4314c1a877f54ec97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8caf3261786fa1c5418402c3c72fe836"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a8caf3261786fa1c5418402c3c72fe836">getMsg</a> ()</td></tr>
 <tr class="memdesc:a8caf3261786fa1c5418402c3c72fe836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the contents of the message buffer. The message buffer is updated if new chars are received by <a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97" title="Call this function as often as you like to check for new messages. Valid messages cause the function ...">check()</a>.  <a href="#a8caf3261786fa1c5418402c3c72fe836">More...</a><br /></td></tr>
@@ -124,8 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a10f32797f128631baf780380d8c8d90a"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a10f32797f128631baf780380d8c8d90a">getMsg</a> (uint8_t startIndex)</td></tr>
 <tr class="memdesc:a10f32797f128631baf780380d8c8d90a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the message starting at index startIndex.  <a href="#a10f32797f128631baf780380d8c8d90a">More...</a><br /></td></tr>
 <tr class="separator:a10f32797f128631baf780380d8c8d90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af49355fbb90691641e60c23e97771f54"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#af49355fbb90691641e60c23e97771f54">getLen</a> ()</td></tr>
-<tr class="separator:af49355fbb90691641e60c23e97771f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1598a726060029ba9dc2c7923f25e59e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a1598a726060029ba9dc2c7923f25e59e">getMsgLen</a> ()</td></tr>
+<tr class="memdesc:a1598a726060029ba9dc2c7923f25e59e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the length of the message in the message buffer.  <a href="#a1598a726060029ba9dc2c7923f25e59e">More...</a><br /></td></tr>
+<tr class="separator:a1598a726060029ba9dc2c7923f25e59e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5f52cf3fa1edefb09080f6057d57fa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#af5f52cf3fa1edefb09080f6057d57fa7">setMsgMinLen</a> (uint8_t msgMinLen)</td></tr>
 <tr class="memdesc:af5f52cf3fa1edefb09080f6057d57fa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the valid message minimum length. Received messages that are shorter than this will be discarded and <a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97" title="Call this function as often as you like to check for new messages. Valid messages cause the function ...">check()</a> will return a 0.  <a href="#af5f52cf3fa1edefb09080f6057d57fa7">More...</a><br /></td></tr>
 <tr class="separator:af5f52cf3fa1edefb09080f6057d57fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,7 +177,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad8a8e00045c34d92d8409491740b7c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an NAK char followed by the ETX char.  <a href="#ad8a8e00045c34d92d8409491740b7c6f">More...</a><br /></td></tr>
 <tr class="separator:ad8a8e00045c34d92d8409491740b7c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="class_serial_checker.html" title="SerialChecker is an Arduino based class for easy handling of serial messages. SerialChecker can be us...">SerialChecker</a> is an Arduino based class for easy handling of serial messages. <a class="el" href="class_serial_checker.html" title="SerialChecker is an Arduino based class for easy handling of serial messages. SerialChecker can be us...">SerialChecker</a> can be used to check incoming messages <br />
+ </p>
+<p><a class="el" href="class_serial_checker.html" title="SerialChecker is an Arduino based class for easy handling of serial messages. SerialChecker can be us...">SerialChecker</a> can be used to check incoming messages </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7f23a95e895512932a0d88a0ba5af974"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7f23a95e895512932a0d88a0ba5af974">&#9670;&nbsp;</a></span>SerialChecker() <span class="overload">[1/2]</span></h2>
 
@@ -338,7 +347,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Call this function as often as you like to check for new messages. Valid messages cause the function to return the length of received message. This is also available by calling getMsgLen(). If no message, or an incomplete message is received, tt transfers the partial message (any message not terminated by an ETX char) from the arduino's serial buffer to this class's message buffer and returns a 0. </p>
+<p>Call this function as often as you like to check for new messages. Valid messages cause the function to return the length of received message. This is also available by calling <a class="el" href="class_serial_checker.html#a1598a726060029ba9dc2c7923f25e59e" title="Gets the length of the message in the message buffer. ">getMsgLen()</a>. If no message, or an incomplete message is received, tt transfers the partial message (any message not terminated by an ETX char) from the arduino's serial buffer to this class's message buffer and returns a 0. </p>
 <p>If the message is too long or below the minimum length, it returns a 0 and deletes the message.</p>
 <p>If enableSTX(false) is used, a start STX char is not required, but if one is received, any previous received chars will be delected. This is useful to discard partial or garbled messages. If enableSTX(true) is used, a received message must begin with an STX char. Subsequent STX chars in this case will be counted as valid message body chars. it restarts the message if a it If an incomplete message is sitting in the serial buffer, this function will append it to this class's message buffer. Once an ETX end char is received (default is newline '<br />
 ' char), the message is checked This is the main function.</p>
@@ -607,23 +616,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af49355fbb90691641e60c23e97771f54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af49355fbb90691641e60c23e97771f54">&#9670;&nbsp;</a></span>getLen()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t SerialChecker::getLen </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a8caf3261786fa1c5418402c3c72fe836"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8caf3261786fa1c5418402c3c72fe836">&#9670;&nbsp;</a></span>getMsg() <span class="overload">[1/2]</span></h2>
 
@@ -668,6 +660,26 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The null terminated message starting at index startIndex. </dd></dl>
+
+</div>
+</div>
+<a id="a1598a726060029ba9dc2c7923f25e59e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1598a726060029ba9dc2c7923f25e59e">&#9670;&nbsp;</a></span>getMsgLen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t SerialChecker::getMsgLen </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the length of the message in the message buffer. </p>
+<dl class="section return"><dt>Returns</dt><dd>The message length. </dd></dl>
 
 </div>
 </div>
