@@ -4,12 +4,8 @@
 #include<arduino.h>
 #include<HardwareSerial.h>
 
-/** 
- *  SerialChecker can be used to check incoming messages  
- */
-
 /**
- * @brief      SerialChecker is an Arduino based class for easy handling of serial messages.
+ * @brief      SerialChecker is an Arduino based class for the easy handling of serial messages.
  *              SerialChecker can be used to check incoming messages  
  */
 class SerialChecker{
