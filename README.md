@@ -29,33 +29,31 @@ If the first char is 'B', then `sc.int8()` is used to convert the rest of the me
 
 `sc.int8()` was not given an argument so it looks through the received message until a minus sign or an integer number is found. The function then converts the rest of the message into an int8. This works for both signed and unsigned values as long as the container is of the correct type. In this case, `uint8_t brightness` is used.
 
->#include "SerialChecker.h"
->
->SerialChecker sc;
->
->void setup(){
->    sc.init();
->    Serial.println("Connected to SerialCheckerExample.ino");
->    pinMode(13, OUTPUT);
->}
->
->void loop(){
->    if(sc.check()){
->        if(sc.contains("ON")){
->            analogWrite(13, 255);
->        }
->        else if(sc.contains("OFF")){}
->            analogWrite(13, 0);
->        }
->        else if(sc.contains("B")){}
->            uint8_t brightness = sc.int8();
->            analogWrite(13, brightness);
->        }
->    }
->    
->    // Do other stuff...
->}
+```
+#include "SerialChecker.h"
 
-#### Basic usage
+SerialChecker sc;
 
-This shows how to 
+void setup(){
+    sc.init();
+    Serial.println("Connected to SerialCheckerExample.ino");
+    pinMode(13, OUTPUT);
+}
+
+void loop(){
+    if(sc.check()){
+        if(sc.contains("ON")){
+            analogWrite(13, 255);
+        }
+        else if(sc.contains("OFF")){}
+            analogWrite(13, 0);
+        }
+        else if(sc.contains("B")){}
+            uint8_t brightness = sc.int8();
+            analogWrite(13, brightness);
+        }
+    }
+    
+    // Do other stuff...
+}
+```
