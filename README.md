@@ -13,6 +13,12 @@ SerialChecker is an Arduino based class for the easy handling of serial messages
 7. Can check for the presence of char arrays in the incoming message making it simple for the user to decide how to handle the message.
 8. Can convert chosen parts of the message to floats and both signed and unsigned 8, 16 and 32 bit integers.
 
+### Typical usage
+
+This code was written for use in a research setting where most of the hardware that runs various spectrometers and power supplies is 'homemade'. Arduinos are used for things like setting voltages and temperatures, getting readings and controlling stepper motors. Asynchronous serial communications are susceptible to noise or timing issues which can result in garbled messages being received or messages missed entirely. In these uses, especially when setting voltages or currents on sensitive equipment, a garbled serial message could cause catastrophic damage. 
+
+If a message is sent to the arduino along with a checksum, errors are significantly reduced. The arduino can send back NAK (not acknowledged) chars in the case that a valid message was not received, thereby alerting the sender to resend etc. Sending ACK messages lets the sender know the message was successfully received as well. This serial library handles these cases, provides an easy way to recognise commands and interprete ascii messages in to floats and ints.
+
 ### Installation
 
 For now, just place SerialChecker.h and SerialChecker.cpp in the same folder as the arduino .ino file and type `#include "SerialChecker.h"` at the top of the file.
@@ -57,3 +63,10 @@ void loop(){
     // Do other stuff...
 }
 ```
+
+### To do:
+
+1. Prevent errors in conversion of floats and ints so that they stop conversion if a non numeric char is received.
+2. Add more examples and an example code folder.
+3. Style as real arduino library with command highlighting in the arduino ide.
+4. Submit to arduino library list thingy.
