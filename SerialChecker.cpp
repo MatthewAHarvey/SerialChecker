@@ -78,6 +78,15 @@ void SerialChecker::enableChecksum(){
 }
 
 /**
+ * @brief      Sets the checksum type.
+ *
+ * @param[in]  checksumType  The checksum type to be used as defined by the checksumTypeEnum. use like setChecksumType(checksumTypeEnum::spellmanMPS) for example.
+ */
+void SerialChecker::setChecksumType(checksumTypeEnum checksumType){
+    this->checksumType = checksumType;
+}
+
+/**
  * @brief      Enables the use of and STX char at the start of a received message. If requireSTX == false, presence of an STX char in the received message array will reset the start of the message to the next char. This is useful in case the message received consists of some garbled chars followed by a valid message. If requireSTX == true, then messages will only be valid if an STX char is received. The message is then parsed from that point on. In this case, subsequent STX chars are counted the same as any other message chars and do not reset the start index of the received message. This uses the default STX char which is '$'.
  *
  * @param[in]  requireSTX  A flag to enforce the use of starting a message with the STX symbol. If true, messages must start with STX. If false, messages can optionally use STX at the start. If an STX is found part way through the message though, the preceding chars will be discarded. 
@@ -91,7 +100,7 @@ void SerialChecker::enableSTX(bool requireSTX){
 }
 
 /**
- * @brief      As above but allows the user to set a new STX char. The ascii char set does contain both an STX and ETX symbol but these are not human readable so serial monitors such as that used by the arduino IDE will not display them. This can make debugging harder. The default STX char is '$'.
+ * @brief      As above but allows the user to set a new STX char. The ascii char set does contain both an STX and ETX symbol but these are not human readable so serial monitors such as that used by the arduino IDE will not display them. This can make debugging harder. The default STX char is '$'. On the other hand, if enableSTX is used while requireSTX is false AND a checksum is used, if the checksum produced happens to be the STX symbol, then the message can not be successfully received since the checksum will be interpreted as an STX char, and the message receive process reset. If checksums and start characters are both required, ensure that requireSTX flag is set to true.
  *
  * @param[in]  requireSTX  A flag to enforce the use of starting a message with the STX symbol. If true, messages must start with STX. If false, messages can optionally use STX at the start. If an STX is found part way through the message though, the preceding chars will be discarded.
  * @param[in]  STX         The STX char to be used. Default is '$'.
@@ -295,7 +304,10 @@ bool SerialChecker::contains(const char* snippet){
 }
 
 /**
- * @brief      Calculates the checksum of the rawMessage array of length len. I can't remember where I got this algorithm from but it produces a checksum char in the human readable asciii charset range of which there are 128 possibilities. Whilst this will not guarantee an error free message, it will hugely reduce the chances of getting a message with an error in it that matches the checksum.
+ * @brief      Calculates a checksum of the rawMessage array of length len using which ever algorithm is set to be used by the setChecksumType() function. There are currently two options. 
+ * 1. Spellman MPS: Simple checksum algorithm that produces 64 possible chars. This is as defined in the [Spellman MPS Digital Interface manual](https://www.spellmanhv.com/-/media/en/Products/MPS-Digital-Interface.pdf), designed for use with their MPS power supplies.
+ * 2. 8 bit printable chars: This is also a simple checksum which is calculated by summing over all the chars in the message and then mapping the sum to the ascii chars which are printable by the arduino IDE. This is chosen for easier debugging and provides 94 unique checksums.
+ * A limitation of both of these methods is that they are not dependent on the order of the chars in the message and only consider the total sum. They also don't produce very many checksums so the chances of two flipped bits due to noise causing valid checksum to still be produced is higher than 1/100. Having said that, these algorithms have been successfully used in a physics research lab for years without noticeable errors.
  * 
  * Use this function to generate a checksum of a return message.
  *
@@ -305,16 +317,16 @@ bool SerialChecker::contains(const char* snippet){
  * @return     The checksum char.
  */
 char SerialChecker::calcChecksum(char* rawMessage, int len){
-    uint16_t checksum=0;
-    for(uint8_t i = 0; i < len; i++)
-    { //add the command
-        checksum += rawMessage[i];
+    char checksum;
+    switch(checksumType){
+        case checksumTypeEnum::SpellmanMPS:
+            checksum = chksmSpellmanMPS(rawMessage, len);
+            break;
+        case checksumTypeEnum::Readable8bitChars:
+            checksum = chksm8bitAllReadableChars(rawMessage, len);
+            break;
     }
-    //Calculate checksum based on MPS manual
-    checksum = ~checksum+1; //the checksum is currently a unsigned 16bit int. Invert all the bits and add 1.
-    checksum = 0x7F & checksum; // discard the 8 MSBs and clear the remaining MSB (B0000000001111111)
-    checksum = 0x40 | checksum; //bitwise or bit6 with 0x40 (or with a seventh bit which is set to 1.) (B0000000001000000)
-    return (char) checksum;
+    return checksum;
 }
 
 
@@ -328,10 +340,31 @@ char SerialChecker::calcChecksum(char* rawMessage, int len){
  * @return     The checksum char.
  */
 char SerialChecker::calcChecksum(char* rawMessage){
-    uint16_t checksum=0;
-    while(*rawMessage){
-        checksum += *rawMessage;
-        rawMessage++;
+    char checksum;
+    switch(checksumType){
+        case checksumTypeEnum::SpellmanMPS:
+            checksum = chksmSpellmanMPS(rawMessage);
+            break;
+        case checksumTypeEnum::Readable8bitChars:
+            checksum = chksm8bitAllReadableChars(rawMessage);
+            break;
+    }
+    return checksum;
+}
+
+/**
+ * @brief      Calculates a checksum that is compatible with the Spellman MPS range of high voltage power supplies as detailed [here](https://www.spellmanhv.com/-/media/en/Products/MPS-Digital-Interface.pdf).
+ *
+ * @param      rawMessage  The raw message
+ * @param[in]  len         The length of the message
+ *
+ * @return     the calculated checksum char
+ */
+char SerialChecker::chksmSpellmanMPS(char* rawMessage, int len){
+    uint8_t checksum=0; // used to use uint16_t but 8 works
+    for(uint8_t i = 0; i < len; i++)
+    { //add the command
+        checksum += rawMessage[i];
     }
     //Calculate checksum based on MPS manual
     checksum = ~checksum+1; //the checksum is currently a unsigned 16bit int. Invert all the bits and add 1.
@@ -339,6 +372,76 @@ char SerialChecker::calcChecksum(char* rawMessage){
     checksum = 0x40 | checksum; //bitwise or bit6 with 0x40 (or with a seventh bit which is set to 1.) (B0000000001000000)
     return (char) checksum;
 }
+
+/**
+ * @brief      Calculates a checksum that is compatible with the Spellman MPS range of high voltage power supplies as detailed [here](https://www.spellmanhv.com/-/media/en/Products/MPS-Digital-Interface.pdf).
+ *
+ * @param      rawMessage  The raw message
+ *
+ * @return     the calculated checksum char
+ */
+char SerialChecker::chksmSpellmanMPS(char* rawMessage){
+    uint8_t checksum=0; // used to use uint16_t but 8 works
+    while(*rawMessage){
+        checksum += *rawMessage;
+        rawMessage++;
+    }
+    checksum = ~checksum+1; //the checksum is currently a unsigned 16bit int. Invert all the bits and add 1.
+    checksum = 0x7F & checksum; // discard the 8 MSBs and clear the remaining MSB (B0000000001111111)
+    checksum = 0x40 | checksum; //bitwise or bit6 with 0x40 (or with a seventh bit which is set to 1.) (B0000000001000000)
+    return (char) checksum;
+}
+
+/**
+ * @brief      Calculates a checksum where the resultant char is in the range of chars that are printable by the arduino IDE. That is 33: '!' to 126: '~'
+ *
+ * @param      rawMessage  The raw message
+ * @param[in]  len         The length of the message
+ *
+ * @return     the calculated checksum char
+ */
+char SerialChecker::chksm8bitAllReadableChars(char* rawMessage, int len){
+    uint8_t checksum=0; // used to use uint16_t but 8 works
+    for(uint8_t i = 0; i < len; i++)
+    { //add the command
+        checksum += rawMessage[i];
+    }
+    checksum &= 0x7F; // clear the MSB (0b1111111) so that the number can only be between 0 and 127.
+    checksum += 33; // 33 is the minimum printable char '!'
+    if(checksum > 126){
+        checksum -= 94; // 126 is the last readable char '~', so wrap back to the first printable char by subtracting 94.
+    }
+    return (char) checksum;
+}
+
+/**
+ * @brief      Calculates a checksum where the resultant char is in the range of chars that are printable by the arduino IDE. That is 33: '!' to 126: '~'
+ *
+ * @param      rawMessage  The raw message
+ *
+ * @return     the calculated checksum char
+ */
+char SerialChecker::chksm8bitAllReadableChars(char* rawMessage){
+    uint8_t checksum=0; // used to use uint16_t but 8 works
+    while(*rawMessage){
+        checksum += *rawMessage;
+        rawMessage++;
+    }
+    checksum &= 0x7F; // clear the MSB (0b1111111) so that the number can only be between 0 and 127.
+    checksum += 33; // 33 is the minimum printable char '!'
+    if(checksum > 126){
+        checksum -= 94; // 126 is the last readable char '~', so wrap back to the first printable char by subtracting 94.
+    }
+    return (char) checksum;
+}
+
+// def testChecksum8bitReadableChars(i: int) -> int:
+//     checksum = i
+//     checksum &= 127 #0x7F 0b1111111
+//     checksum += 33 # first readable char is '!'
+//     if(checksum > 126): # last readable char is '~'
+//         checksum -= 94
+//     return checksum
 
 /**
  * @brief      Converts the message in the message buffer starting at startIndex to a float

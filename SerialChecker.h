@@ -4,6 +4,12 @@
 #include<arduino.h>
 #include<HardwareSerial.h>
 
+
+/**
+ * @brief      Different types of checksum algorithm can be used. At the moment the choice is limited to just two simple ones that only produce a limited set of printable chars.
+ */
+enum class checksumTypeEnum{ SpellmanMPS, Readable8bitChars };
+
 /**
  * @brief      SerialChecker is an Arduino based class for the easy handling of serial messages.
  *              SerialChecker can be used to check incoming messages  
@@ -13,6 +19,7 @@ private:
     uint32_t baudrate = 250000;
     HardwareSerial* HSerial;
     bool useChecksum = false;
+    checksumTypeEnum checksumType = checksumTypeEnum::Readable8bitChars; 
     bool useACKNAK = false;
     bool useSTX = false;
     bool requireSTX = false;
@@ -37,6 +44,7 @@ public:
     void enableACKNAK(char ACK, char NAK);
     void disableChecksum();
     void enableChecksum();
+    void setChecksumType(checksumTypeEnum checksumType);
     void enableSTX(bool requireSTX);
     void enableSTX(bool requireSTX, char STX);
     void disableSTX();
@@ -50,6 +58,10 @@ public:
     bool contains(const char* snippet);
     char calcChecksum(char* rawMessage, int len);
     char calcChecksum(char* rawMessage);
+    char chksmSpellmanMPS(char* rawMessage, int len);
+    char chksmSpellmanMPS(char* rawMessage);
+    char chksm8bitAllReadableChars(char* rawMessage, int len);
+    char chksm8bitAllReadableChars(char* rawMessage);
     float toFloat(uint8_t startIndex);
     float toFloat();
     uint8_t toInt8(uint8_t startIndex);
