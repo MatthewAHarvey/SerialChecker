@@ -4,38 +4,42 @@ SerialChecker sc;
 
 void setup(){
     sc.init();
-    sc.enableACKNAK('%', '*');
-    sc.enableSTX(false, '£');
+    sc.println("Connected to SerialChecker.ino");
+    sc.print('m');
+    Serial.println();
+    Serial.print('m');
+    sc.enableACKNAK('%', '*');// ACK = '%', NAK = '*'. NAK is sent automatically if bad message received. ACK must be sent manually with sc.sendACK();. NAK can also be sent with sendNAK();
+    sc.enableSTX(false, '£'); // STX use is not enforced but will be recognised as '£'. This does mean that '£' can't be used as a character in the message...
 }
 
 void loop(){
     delay(100);
     int len = sc.check();
     if(len){
-        Serial.print(sc.getMsgLen());
-        Serial.print(", ");
-        Serial.print(len);
-        Serial.print(", ");
-        Serial.println(sc.getMsg());
+        sc.print(sc.getMsgLen());
+        sc.print(", ");
+        sc.print(len);
+        sc.print(", ");
+        sc.println(sc.getMsg());
         if(sc.contains("TEST")){
-            Serial.println("contains TEST");
+            sc.println("contains TEST");
         }
         else if(sc.contains("U")){
             uint16_t num = sc.toInt16(1);
-            Serial.println(num);
+            sc.println(num);
         }
         else if(sc.contains("I")){
             int16_t num = sc.toInt16(); // don't need to specify a start index!
-            Serial.println(num);
+            sc.println(num);
         }
         else if(sc.contains("F")){
-            Serial.println(sc.toFloat());
+            sc.println(sc.toFloat());
         }
         else if(sc.contains("Calc")){
-            Serial.println(sc.calcChecksum(sc.getMsg()));
+            sc.println(sc.calcChecksum(sc.getMsg()));
         }
         else if(sc.contains("M")){
-            Serial.println(sc.getMsg(3));
+            sc.println(sc.getMsg(3));
         }
         else if(sc.contains("EE")){
             sc.sendACK();

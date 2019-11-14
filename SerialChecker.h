@@ -24,7 +24,7 @@ private:
     bool useSTX = false;
     bool requireSTX = false;
     bool receiveStarted = true;
-    uint8_t msgMinLen = 2;
+    uint8_t msgMinLen = 1;
     uint8_t msgMaxLen = 13;
     char STX = '$';
     char ETX = '\n'; 
@@ -54,6 +54,7 @@ public:
     char* getMsg(uint8_t startIndex);
     uint8_t getMsgLen();
     void setMsgMinLen(uint8_t msgMinLen);
+    void setMsgMaxLen(uint8_t msgMaxLen);
     bool contains(char* snippet, uint8_t startIndex);
     bool contains(const char* snippet);
     char calcChecksum(char* rawMessage, int len);
@@ -72,6 +73,27 @@ public:
     uint32_t toInt32(); // reads from first numeric or minus sign
     void sendACK(); // sends an acknowledge char
     void sendNAK(); // sends a not acknowledge char
+    void print(char* message);
+    void print(char c);
+    void print(uint8_t n);
+    void print(uint16_t n);
+    void print(uint32_t n);
+    void print(int8_t n);
+    void print(int16_t n);
+    void print(int32_t n);
+    void print(float n);
+    void print(double n);
+
+    void println(char* message);
+    void println(char c);
+    void println(uint8_t n);
+    void println(uint16_t n);
+    void println(uint32_t n);
+    void println(int8_t n);
+    void println(int16_t n);
+    void println(int32_t n);
+    void println(float n);
+    void println(double n);
 };
 
 #endif

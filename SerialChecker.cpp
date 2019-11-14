@@ -261,6 +261,17 @@ void SerialChecker::setMsgMinLen(uint8_t msgMinLen){
 }
 
 /**
+ * @brief      Sets the valid message maximum length. Received messages that are longer than this will be discarded and check() will return a 0.
+ *
+ * @param[in]  msgMaxLen  The message maximum valid length
+ */
+void SerialChecker::setMsgMaxLen(uint8_t msgMaxLen){
+    this->msgMaxLen = msgMaxLen;
+    delete [] message;
+    message = new char[msgMaxLen];
+}
+
+/**
  * @brief      Check to see if the received message contains a char array starting at startIndex. With this function the user can check to see what type of message has been sent.
  *
  * @param[in]  snippet  The snippet char array to be compared.
@@ -649,4 +660,84 @@ void SerialChecker::sendACK(){
  */
 void SerialChecker::sendNAK(){
     HSerial->println(NAK);
+}
+
+void SerialChecker::print(char* message){
+    HSerial->print(message);
+}
+
+void SerialChecker::print(char c){
+    HSerial->print(c);
+}
+
+void SerialChecker::print(uint8_t n){
+    HSerial->print(n);
+}
+
+void SerialChecker::print(uint16_t n){
+    HSerial->print(n);
+}
+
+void SerialChecker::print(uint32_t n){
+    HSerial->print(n);
+}
+
+void SerialChecker::print(int8_t n){
+    HSerial->print(n);
+}
+
+void SerialChecker::print(int16_t n){
+    HSerial->print(n);
+}
+
+void SerialChecker::print(int32_t n){
+    HSerial->print(n);
+}
+
+void SerialChecker::print(float n){
+    HSerial->print(n);
+}
+
+void SerialChecker::print(double n){
+    HSerial->print(n);
+}
+
+void SerialChecker::println(char* message){
+    HSerial->println(message);
+}
+
+void SerialChecker::println(char c){
+    HSerial->println(c);
+}
+
+void SerialChecker::println(uint8_t n){
+    HSerial->println(n);
+}
+
+void SerialChecker::println(uint16_t n){
+    HSerial->println(n);
+}
+
+void SerialChecker::println(uint32_t n){
+    HSerial->println(n);
+}
+
+void SerialChecker::println(int8_t n){
+    HSerial->println(n);
+}
+
+void SerialChecker::println(int16_t n){
+    HSerial->println(n);
+}
+
+void SerialChecker::println(int32_t n){
+    HSerial->println(n);
+}
+
+void SerialChecker::println(float n){
+    HSerial->println(n);
+}
+
+void SerialChecker::println(double n){
+    HSerial->println(n);
 }
