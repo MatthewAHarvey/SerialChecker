@@ -4,10 +4,12 @@ SerialChecker sc;
 
 void setup(){
     sc.init();
-    sc.println("Connected to SerialChecker.ino");
-    sc.print('m');
-    Serial.println();
-    Serial.print('m');
+
+    Serial.println("Connected to SerialChecker.ino");
+    // Can now print messages via the SerialChecker class instance itself:
+    sc.println("Still connected to SerialChecker.ino...");
+    // You can use Serial.print or the class instance method since they are the same. The advantage of using the class instance message becomes apparent when you have multiple serial comms targets.
+    
     sc.enableACKNAK('%', '*');// ACK = '%', NAK = '*'. NAK is sent automatically if bad message received. ACK must be sent manually with sc.sendACK();. NAK can also be sent with sendNAK();
     sc.enableSTX(false, '£'); // STX use is not enforced but will be recognised as '£'. This does mean that '£' can't be used as a character in the message...
 }

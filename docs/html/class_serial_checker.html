@@ -144,6 +144,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af5f52cf3fa1edefb09080f6057d57fa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#af5f52cf3fa1edefb09080f6057d57fa7">setMsgMinLen</a> (uint8_t msgMinLen)</td></tr>
 <tr class="memdesc:af5f52cf3fa1edefb09080f6057d57fa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the valid message minimum length. Received messages that are shorter than this will be discarded and <a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97" title="Call this function as often as you like to check for new messages. Valid messages cause the function ...">check()</a> will return a 0.  <a href="#af5f52cf3fa1edefb09080f6057d57fa7">More...</a><br /></td></tr>
 <tr class="separator:af5f52cf3fa1edefb09080f6057d57fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a377d50581f3281e5d8273273ba4263ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a377d50581f3281e5d8273273ba4263ef">setMsgMaxLen</a> (uint8_t msgMaxLen)</td></tr>
+<tr class="memdesc:a377d50581f3281e5d8273273ba4263ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the valid message maximum length. Received messages that are longer than this will be discarded and <a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97" title="Call this function as often as you like to check for new messages. Valid messages cause the function ...">check()</a> will return a 0.  <a href="#a377d50581f3281e5d8273273ba4263ef">More...</a><br /></td></tr>
+<tr class="separator:a377d50581f3281e5d8273273ba4263ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89670979931bfe27c51cb2f05080ca38"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a89670979931bfe27c51cb2f05080ca38">contains</a> (char *snippet, uint8_t startIndex)</td></tr>
 <tr class="memdesc:a89670979931bfe27c51cb2f05080ca38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check to see if the received message contains a char array starting at startIndex. With this function the user can check to see what type of message has been sent.  <a href="#a89670979931bfe27c51cb2f05080ca38">More...</a><br /></td></tr>
 <tr class="separator:a89670979931bfe27c51cb2f05080ca38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,6 +203,66 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ad8a8e00045c34d92d8409491740b7c6f">sendNAK</a> ()</td></tr>
 <tr class="memdesc:ad8a8e00045c34d92d8409491740b7c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends an NAK char followed by the ETX char. <br /></td></tr>
 <tr class="separator:ad8a8e00045c34d92d8409491740b7c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fb4121a4d93190ac1e67c1bcd153b1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a9fb4121a4d93190ac1e67c1bcd153b1d">print</a> (char *message)</td></tr>
+<tr class="memdesc:a9fb4121a4d93190ac1e67c1bcd153b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#a9fb4121a4d93190ac1e67c1bcd153b1d">More...</a><br /></td></tr>
+<tr class="separator:a9fb4121a4d93190ac1e67c1bcd153b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40053c3195a40e41c7b63fceb89822bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a40053c3195a40e41c7b63fceb89822bc">print</a> (char c)</td></tr>
+<tr class="memdesc:a40053c3195a40e41c7b63fceb89822bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#a40053c3195a40e41c7b63fceb89822bc">More...</a><br /></td></tr>
+<tr class="separator:a40053c3195a40e41c7b63fceb89822bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad81aface89a8ebe601fe2a85373f7cd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ad81aface89a8ebe601fe2a85373f7cd4">print</a> (uint8_t n)</td></tr>
+<tr class="memdesc:ad81aface89a8ebe601fe2a85373f7cd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#ad81aface89a8ebe601fe2a85373f7cd4">More...</a><br /></td></tr>
+<tr class="separator:ad81aface89a8ebe601fe2a85373f7cd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35d5d786ee39ab250cb18b6c5fc94cbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a35d5d786ee39ab250cb18b6c5fc94cbd">print</a> (uint16_t n)</td></tr>
+<tr class="memdesc:a35d5d786ee39ab250cb18b6c5fc94cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#a35d5d786ee39ab250cb18b6c5fc94cbd">More...</a><br /></td></tr>
+<tr class="separator:a35d5d786ee39ab250cb18b6c5fc94cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b0f054126ab441744119d0de2cc2cee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a1b0f054126ab441744119d0de2cc2cee">print</a> (uint32_t n)</td></tr>
+<tr class="memdesc:a1b0f054126ab441744119d0de2cc2cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#a1b0f054126ab441744119d0de2cc2cee">More...</a><br /></td></tr>
+<tr class="separator:a1b0f054126ab441744119d0de2cc2cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a654be744f734715384d4aeac16859a75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a654be744f734715384d4aeac16859a75">print</a> (int8_t n)</td></tr>
+<tr class="memdesc:a654be744f734715384d4aeac16859a75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#a654be744f734715384d4aeac16859a75">More...</a><br /></td></tr>
+<tr class="separator:a654be744f734715384d4aeac16859a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc5cb922ea3122905dbe0472ee4af423"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#acc5cb922ea3122905dbe0472ee4af423">print</a> (int16_t n)</td></tr>
+<tr class="memdesc:acc5cb922ea3122905dbe0472ee4af423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#acc5cb922ea3122905dbe0472ee4af423">More...</a><br /></td></tr>
+<tr class="separator:acc5cb922ea3122905dbe0472ee4af423"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f79fcae37da03b0e841a51f7c34f710"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a5f79fcae37da03b0e841a51f7c34f710">print</a> (int32_t n)</td></tr>
+<tr class="memdesc:a5f79fcae37da03b0e841a51f7c34f710"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#a5f79fcae37da03b0e841a51f7c34f710">More...</a><br /></td></tr>
+<tr class="separator:a5f79fcae37da03b0e841a51f7c34f710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab55e537733427dc7766baf76304e8133"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ab55e537733427dc7766baf76304e8133">print</a> (float n)</td></tr>
+<tr class="memdesc:ab55e537733427dc7766baf76304e8133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#ab55e537733427dc7766baf76304e8133">More...</a><br /></td></tr>
+<tr class="separator:ab55e537733427dc7766baf76304e8133"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa20ade239e0dff5c95b2ee32c5aedfcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#aa20ade239e0dff5c95b2ee32c5aedfcf">print</a> (double n)</td></tr>
+<tr class="memdesc:aa20ade239e0dff5c95b2ee32c5aedfcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .print method.  <a href="#aa20ade239e0dff5c95b2ee32c5aedfcf">More...</a><br /></td></tr>
+<tr class="separator:aa20ade239e0dff5c95b2ee32c5aedfcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8bc95a0f392ba25d9df811a06156b7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#aa8bc95a0f392ba25d9df811a06156b7d">println</a> (char *message)</td></tr>
+<tr class="memdesc:aa8bc95a0f392ba25d9df811a06156b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#aa8bc95a0f392ba25d9df811a06156b7d">More...</a><br /></td></tr>
+<tr class="separator:aa8bc95a0f392ba25d9df811a06156b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90ffaba363c0c3e26e9de5aeb2b5a3dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a90ffaba363c0c3e26e9de5aeb2b5a3dc">println</a> (char c)</td></tr>
+<tr class="memdesc:a90ffaba363c0c3e26e9de5aeb2b5a3dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#a90ffaba363c0c3e26e9de5aeb2b5a3dc">More...</a><br /></td></tr>
+<tr class="separator:a90ffaba363c0c3e26e9de5aeb2b5a3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab28fc38d67060c965c935b41470839de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ab28fc38d67060c965c935b41470839de">println</a> (uint8_t n)</td></tr>
+<tr class="memdesc:ab28fc38d67060c965c935b41470839de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#ab28fc38d67060c965c935b41470839de">More...</a><br /></td></tr>
+<tr class="separator:ab28fc38d67060c965c935b41470839de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac003447d3c7bf20d843e72fa9fff3b0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ac003447d3c7bf20d843e72fa9fff3b0b">println</a> (uint16_t n)</td></tr>
+<tr class="memdesc:ac003447d3c7bf20d843e72fa9fff3b0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#ac003447d3c7bf20d843e72fa9fff3b0b">More...</a><br /></td></tr>
+<tr class="separator:ac003447d3c7bf20d843e72fa9fff3b0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13a378921c330768495bc8e49c682d9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a13a378921c330768495bc8e49c682d9f">println</a> (uint32_t n)</td></tr>
+<tr class="memdesc:a13a378921c330768495bc8e49c682d9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#a13a378921c330768495bc8e49c682d9f">More...</a><br /></td></tr>
+<tr class="separator:a13a378921c330768495bc8e49c682d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d00255ee7a17d0411e87f5e060a5545"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a8d00255ee7a17d0411e87f5e060a5545">println</a> (int8_t n)</td></tr>
+<tr class="memdesc:a8d00255ee7a17d0411e87f5e060a5545"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#a8d00255ee7a17d0411e87f5e060a5545">More...</a><br /></td></tr>
+<tr class="separator:a8d00255ee7a17d0411e87f5e060a5545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11cb688313cd26676fe346e95d032b81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a11cb688313cd26676fe346e95d032b81">println</a> (int16_t n)</td></tr>
+<tr class="memdesc:a11cb688313cd26676fe346e95d032b81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#a11cb688313cd26676fe346e95d032b81">More...</a><br /></td></tr>
+<tr class="separator:a11cb688313cd26676fe346e95d032b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd0275825cdfd73ada483e73955e3cd9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#acd0275825cdfd73ada483e73955e3cd9">println</a> (int32_t n)</td></tr>
+<tr class="memdesc:acd0275825cdfd73ada483e73955e3cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#acd0275825cdfd73ada483e73955e3cd9">More...</a><br /></td></tr>
+<tr class="separator:acd0275825cdfd73ada483e73955e3cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e2953229d6d0587e0fa62433cc93acf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#a5e2953229d6d0587e0fa62433cc93acf">println</a> (float n)</td></tr>
+<tr class="memdesc:a5e2953229d6d0587e0fa62433cc93acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#a5e2953229d6d0587e0fa62433cc93acf">More...</a><br /></td></tr>
+<tr class="separator:a5e2953229d6d0587e0fa62433cc93acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20bb3704766c25b156dc0477b7994a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_checker.html#ad20bb3704766c25b156dc0477b7994a1">println</a> (double n)</td></tr>
+<tr class="memdesc:ad20bb3704766c25b156dc0477b7994a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as Serial's .println method.  <a href="#ad20bb3704766c25b156dc0477b7994a1">More...</a><br /></td></tr>
+<tr class="separator:ad20bb3704766c25b156dc0477b7994a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_serial_checker.html" title="SerialChecker is an Arduino based class for the easy handling of serial messages. SerialChecker can b...">SerialChecker</a> is an Arduino based class for the easy handling of serial messages. <a class="el" href="class_serial_checker.html" title="SerialChecker is an Arduino based class for the easy handling of serial messages. SerialChecker can b...">SerialChecker</a> can be used to check incoming messages <br />
@@ -707,6 +770,526 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a9fb4121a4d93190ac1e67c1bcd153b1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fb4121a4d93190ac1e67c1bcd153b1d">&#9670;&nbsp;</a></span>print() <span class="overload">[1/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The c style string message </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a40053c3195a40e41c7b63fceb89822bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40053c3195a40e41c7b63fceb89822bc">&#9670;&nbsp;</a></span>print() <span class="overload">[2/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>The char to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad81aface89a8ebe601fe2a85373f7cd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad81aface89a8ebe601fe2a85373f7cd4">&#9670;&nbsp;</a></span>print() <span class="overload">[3/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The uint8_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a35d5d786ee39ab250cb18b6c5fc94cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35d5d786ee39ab250cb18b6c5fc94cbd">&#9670;&nbsp;</a></span>print() <span class="overload">[4/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The uint16_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1b0f054126ab441744119d0de2cc2cee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b0f054126ab441744119d0de2cc2cee">&#9670;&nbsp;</a></span>print() <span class="overload">[5/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The uint32_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a654be744f734715384d4aeac16859a75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a654be744f734715384d4aeac16859a75">&#9670;&nbsp;</a></span>print() <span class="overload">[6/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The int8_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acc5cb922ea3122905dbe0472ee4af423"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc5cb922ea3122905dbe0472ee4af423">&#9670;&nbsp;</a></span>print() <span class="overload">[7/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The int16_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5f79fcae37da03b0e841a51f7c34f710"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f79fcae37da03b0e841a51f7c34f710">&#9670;&nbsp;</a></span>print() <span class="overload">[8/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The int32_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab55e537733427dc7766baf76304e8133"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab55e537733427dc7766baf76304e8133">&#9670;&nbsp;</a></span>print() <span class="overload">[9/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The float to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa20ade239e0dff5c95b2ee32c5aedfcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa20ade239e0dff5c95b2ee32c5aedfcf">&#9670;&nbsp;</a></span>print() <span class="overload">[10/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::print </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .print method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The float to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa8bc95a0f392ba25d9df811a06156b7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8bc95a0f392ba25d9df811a06156b7d">&#9670;&nbsp;</a></span>println() <span class="overload">[1/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>The c-style string to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a90ffaba363c0c3e26e9de5aeb2b5a3dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90ffaba363c0c3e26e9de5aeb2b5a3dc">&#9670;&nbsp;</a></span>println() <span class="overload">[2/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>The char to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab28fc38d67060c965c935b41470839de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab28fc38d67060c965c935b41470839de">&#9670;&nbsp;</a></span>println() <span class="overload">[3/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The uint8_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac003447d3c7bf20d843e72fa9fff3b0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac003447d3c7bf20d843e72fa9fff3b0b">&#9670;&nbsp;</a></span>println() <span class="overload">[4/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The uint16_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a13a378921c330768495bc8e49c682d9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13a378921c330768495bc8e49c682d9f">&#9670;&nbsp;</a></span>println() <span class="overload">[5/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The uint32_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8d00255ee7a17d0411e87f5e060a5545"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d00255ee7a17d0411e87f5e060a5545">&#9670;&nbsp;</a></span>println() <span class="overload">[6/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The int8_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a11cb688313cd26676fe346e95d032b81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11cb688313cd26676fe346e95d032b81">&#9670;&nbsp;</a></span>println() <span class="overload">[7/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The int16_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acd0275825cdfd73ada483e73955e3cd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd0275825cdfd73ada483e73955e3cd9">&#9670;&nbsp;</a></span>println() <span class="overload">[8/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The int32_t to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5e2953229d6d0587e0fa62433cc93acf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e2953229d6d0587e0fa62433cc93acf">&#9670;&nbsp;</a></span>println() <span class="overload">[9/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The float to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad20bb3704766c25b156dc0477b7994a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad20bb3704766c25b156dc0477b7994a1">&#9670;&nbsp;</a></span>println() <span class="overload">[10/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::println </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Same as Serial's .println method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>The float to print </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ab3c18ad786c60216893df418e77579b4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab3c18ad786c60216893df418e77579b4">&#9670;&nbsp;</a></span>setChecksumType()</h2>
 
@@ -754,6 +1337,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">ETX</td><td>The etx </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a377d50581f3281e5d8273273ba4263ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a377d50581f3281e5d8273273ba4263ef">&#9670;&nbsp;</a></span>setMsgMaxLen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialChecker::setMsgMaxLen </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>msgMaxLen</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the valid message maximum length. Received messages that are longer than this will be discarded and <a class="el" href="class_serial_checker.html#aed2911a79c2373a4314c1a877f54ec97" title="Call this function as often as you like to check for new messages. Valid messages cause the function ...">check()</a> will return a 0. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">msgMaxLen</td><td>The message maximum valid length </td></tr>
   </table>
   </dd>
 </dl>

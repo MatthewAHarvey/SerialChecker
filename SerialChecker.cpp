@@ -662,82 +662,182 @@ void SerialChecker::sendNAK(){
     HSerial->println(NAK);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param      message  The c style string message
+ */
 void SerialChecker::print(char* message){
     HSerial->print(message);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param[in]  c     The char to print
+ */
 void SerialChecker::print(char c){
     HSerial->print(c);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param[in]  n     The uint8_t to print
+ */
 void SerialChecker::print(uint8_t n){
     HSerial->print(n);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param[in]  n     The uint16_t to print
+ */
 void SerialChecker::print(uint16_t n){
     HSerial->print(n);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param[in]  n     The uint32_t to print
+ */
 void SerialChecker::print(uint32_t n){
     HSerial->print(n);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param[in]  n     The int8_t to print
+ */
 void SerialChecker::print(int8_t n){
     HSerial->print(n);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param[in]  n     The int16_t to print
+ */
 void SerialChecker::print(int16_t n){
     HSerial->print(n);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param[in]  n     The int32_t to print
+ */
 void SerialChecker::print(int32_t n){
     HSerial->print(n);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param[in]  n     The float to print
+ */
 void SerialChecker::print(float n){
     HSerial->print(n);
 }
 
+/**
+ * @brief      Same as Serial's .print method.
+ *
+ * @param[in]  n     The float to print
+ */
 void SerialChecker::print(double n){
     HSerial->print(n);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param      message  The c-style string to print
+ */
 void SerialChecker::println(char* message){
     HSerial->println(message);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]  c     The char to print
+ */
 void SerialChecker::println(char c){
     HSerial->println(c);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]  n     The uint8_t to print
+ */
 void SerialChecker::println(uint8_t n){
     HSerial->println(n);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]  n     The uint16_t to print
+ */
 void SerialChecker::println(uint16_t n){
     HSerial->println(n);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]  n     The uint32_t to print
+ */
 void SerialChecker::println(uint32_t n){
     HSerial->println(n);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]  n     The int8_t to print
+ */
 void SerialChecker::println(int8_t n){
     HSerial->println(n);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]  n     The int16_t to print
+ */
 void SerialChecker::println(int16_t n){
     HSerial->println(n);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]  n     The int32_t to print
+ */
 void SerialChecker::println(int32_t n){
     HSerial->println(n);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]  n     The float to print
+ */
 void SerialChecker::println(float n){
     HSerial->println(n);
 }
 
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]  n     The float to print
+ */
 void SerialChecker::println(double n){
     HSerial->println(n);
 }
