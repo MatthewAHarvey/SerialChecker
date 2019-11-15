@@ -44,7 +44,7 @@ SerialChecker sc;
 
 void setup(){
     sc.init();
-    Serial.println("Connected to SerialCheckerExample.ino");
+    sc.println("Connected to SerialCheckerExample.ino");
     pinMode(13, OUTPUT);
 }
 
