@@ -4,7 +4,8 @@
  * @brief      Constructs the object. Dynamically creates a char array to hold message buffers. Assigns the the default arduino serial port. 
  */
 SerialChecker::SerialChecker(){
-    message = new char[msgMaxLen];
+    rawMessage = new char[msgMaxLen];
+    message = rawMessage;
     this->HSerial = &Serial;
 }
 
@@ -19,14 +20,15 @@ SerialChecker::SerialChecker(uint16_t msgMaxLen, HardwareSerial& HSerial, uint32
     this->msgMaxLen = msgMaxLen;
     this->HSerial = &HSerial;
     this->baudrate = baudrate;
-    message = new char[msgMaxLen];
+    rawMessage = new char[msgMaxLen];
+    message = rawMessage;
 }
 
 /**
  * @brief      Destroys the object and frees the memory used by message buffer
  */
 SerialChecker::~SerialChecker(){
-    delete [] message;
+    delete [] rawMessage;
 }
 
 /**
@@ -38,29 +40,29 @@ void SerialChecker::init(){
 }
 
 /**
- * @brief      Disables the use of Acknowledge and Naknowledge messages. This really only disables the use of NAK messages. The user must choose to send an ACK with sendACK() command.
+ * @brief      Disables the use of Acknowledge and Naknowledge messages. This really only disables the use of Nak messages. The user must choose to send an Ack with sendAck() command.
  */
-void SerialChecker::disableACKNAK(){
-    useACKNAK = false;
+void SerialChecker::disableAckNak(){
+    useAckNak = false;
 }
 
 /**
- * @brief      Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a NAK is returned to the sender. This uses the default ACK and NAK chars, 'A' and 'N'. NAKs get sent when a message does not start with the start char, if use of STX is required, see enableSTX(). NAKs also get sent if the message is below the minimum length set by setMsgMinLen(). The default for that is two chars. NAKs are also sent if a message is received with an invalid checksum, if enableChecksum() is used.
+ * @brief      Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a Nak is returned to the sender. This uses the default Ack and Nak chars, 'A' and 'N'. Naks get sent when a message does not start with the start char, if use of STX is required, see enableSTX(). Naks also get sent if the message is below the minimum length set by setMsgMinLen(). The default for that is two chars. Naks are also sent if a message is received with an invalid checksum, if enableChecksum() is used.
  */
-void SerialChecker::enableACKNAK(){
-    useACKNAK = true;
+void SerialChecker::enableAckNak(){
+    useAckNak = true;
 }
 
 /**
- * @brief      Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a NAK is returned to the sender. Here, the ACK and NAK chars are chosen by the user.
+ * @brief      Enables the use of Acknowledge and Naknowledge messages. If an invalid message is received then a Nak is returned to the sender. Here, the Ack and Nak chars are chosen by the user.
  *
- * @param[in]  ACK   The acknowledgement char to be sent by sendACK().
- * @param[in]  NAK   The naknowledgement char to be sent on receipt of invalid message or when sendNAK() is called.
+ * @param[in]  Ack   The acknowledgement char to be sent by sendAck().
+ * @param[in]  Nak   The naknowledgement char to be sent on receipt of invalid message or when sendNak() is called.
  */
-void SerialChecker::enableACKNAK(char ACK, char NAK){
-    useACKNAK = true;
-    this->ACK = ACK;
-    this->NAK = NAK;
+void SerialChecker::enableAckNak(char Ack, char Nak){
+    useAckNak = true;
+    this->Ack = Ack;
+    this->Nak = Nak;
 }
 
 /**
@@ -141,7 +143,7 @@ void SerialChecker::setETX(char ETX){
  * 
  * By default, the class does not use checksums but if enableChecksum() is used, the char preceding the ETX char must be a checksum char. A local checksum is calculated from the rest of the message and compared with the received checksum. If valid, the message length is returned, else a 0.
  * 
- * If enableACKNAK() is used, the check function will send back NAK chars in the event that the message received is not valid based on the above explained conditions. It is left to the user to send back ACK messages if they are needed using sendACK(). For example, a message might be received that sets a parameter. It might not make sense to send this back to the other device but sending an ACK char would notify the device that its message was received and successfully implemented. On the other hand, sendNAK() can be used if the received set parameter is out of the allowed set range for example. 
+ * If enableAckNak() is used, the check function will send back Nak chars in the event that the message received is not valid based on the above explained conditions. It is left to the user to send back Ack messages if they are needed using sendAck(). For example, a message might be received that sets a parameter. It might not make sense to send this back to the other device but sending an Ack char would notify the device that its message was received and successfully implemented. On the other hand, sendNak() can be used if the received set parameter is out of the allowed set range for example. 
  *
  * @return     A uint8_t value is returned representing the length of the message received, excluding the STX start char if used, the checksum char if used, or the ETX end char.
  */
@@ -156,23 +158,23 @@ uint8_t SerialChecker::check(){
             }
             else if(in != ETX && msgIndex < msgMaxLen){
                 //add to message
-                message[msgIndex] = in;
+                rawMessage[msgIndex] = in;
                 msgIndex++;
                 // HSerial->println("Adding to message");
             }
             else if(in == ETX){
                 // message complete so calculate the checksum and compare it
                 // HSerial->println("ETX");
-                message[msgIndex] = '\0';
+                rawMessage[msgIndex] = '\0';
                 // HSerial->println(msgIndex);
                 if(msgIndex >= msgMinLen){ // make sure message is long enough
                     // HSerial->println("Long enough");
                     if(useChecksum){
                         msgLen = msgIndex - 1;
-                        char msgChecksum = message[msgLen];
-                        message[msgLen] = '\0';
+                        char msgChecksum = rawMessage[msgLen];
+                        rawMessage[msgLen] = '\0';
                         //HSerial->println(calcChecksum(message, msgLen));
-                        if(msgChecksum == calcChecksum(message, msgLen)){
+                        if(msgChecksum == calcChecksum(rawMessage, msgLen)){
                             //parseMessage();
                             msgIndex = 0;
                             if(requireSTX){
@@ -180,8 +182,8 @@ uint8_t SerialChecker::check(){
                             }
                             return msgLen;
                         }
-                        else if(useACKNAK){
-                            HSerial->println(NAK);
+                        else if(useAckNak){
+                            HSerial->println(Nak);
                         }
                     }
                     else{
@@ -193,8 +195,8 @@ uint8_t SerialChecker::check(){
                         return msgLen;
                     }
                 }
-                else if(useACKNAK){
-                    HSerial->println(NAK);
+                else if(useAckNak){
+                    HSerial->println(Nak);
                 }
                 // reset megIndex for next message
                 msgIndex = 0;
@@ -203,8 +205,8 @@ uint8_t SerialChecker::check(){
                 // message too long so scrap it and start again.
                 msgIndex = 0;
                 // HSerial->println("Too long");
-                if(useACKNAK){
-                    HSerial->println(NAK);
+                if(useAckNak){
+                    HSerial->println(Nak);
                 }
             } 
         }
@@ -213,13 +215,31 @@ uint8_t SerialChecker::check(){
                 receiveStarted = true;
             }
             else if(in == '\n'){
-                if(useACKNAK){
-                    HSerial->println(NAK);
+                if(useAckNak){
+                    HSerial->println(Nak);
                 }
             }
         }
     }
     return 0;
+}
+
+/**
+ * @brief      Returns the address that the message was sent to as a c-style char string. Do not call this if the @addressLen variable is set to the default of zero.
+ *
+ * @return     The address.
+ */
+char* SerialChecker::getAddress(){
+    if(addressLen > 0){
+        for(uint8_t i = 0; i < addressLen; i++){
+            address[i] = rawMessage[i];
+        }
+        address[addressLen] = '\0';
+        return address;
+    }
+    else{
+        return '\0';
+    }
 }
 
 /**
@@ -269,6 +289,27 @@ void SerialChecker::setMsgMaxLen(uint8_t msgMaxLen){
     this->msgMaxLen = msgMaxLen;
     delete [] message;
     message = new char[msgMaxLen];
+}
+
+/**
+ * @brief      Sets the number of chars used as an address. The message follows on from this.
+ *
+ * @param[in]  len   The new value
+ */
+void SerialChecker::setAddressLen(uint8_t len){
+    address = new char[len + 1]; // + 1 to allow for null terminator
+    address[0] = '\0';
+    addressLen = len;
+    message = &rawMessage[addressLen]; // Move the message pointer past the addres.
+}
+
+/**
+ * @brief      Gets the number of chars used as an address. The message follows on from this.
+ *
+ * @return     The address length.
+ */
+uint8_t SerialChecker::getAddressLen(){
+    return addressLen;
 }
 
 /**
@@ -471,7 +512,7 @@ float SerialChecker::toFloat(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < msgLen; i++) 
+    for(int i = startIndex; i < msgLen - addressLen; i++) 
     {
         if(message[i] == '.'){
             units = false;
@@ -527,7 +568,7 @@ uint8_t SerialChecker::toInt8(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < msgLen; i++) 
+    for(int i = startIndex; i < msgLen - addressLen; i++) 
     {
         number *= 10;
         number += (message[i] -'0');
@@ -573,10 +614,14 @@ uint16_t SerialChecker::toInt16(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < msgLen; i++) 
+    for(int i = startIndex; i < msgLen - addressLen; i++) 
     {
         number *= 10;
         number += (message[i] -'0');
+        Serial.print(message[i]);
+        Serial.print(": ");
+        Serial.println(number);
+        
     }
     if(negative){
         number *= -1;
@@ -617,7 +662,7 @@ uint32_t SerialChecker::toInt32(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < msgLen; i++) 
+    for(int i = startIndex; i < msgLen - addressLen; i++) 
     {
         number *= 10;
         number += (message[i] -'0');
@@ -649,17 +694,17 @@ uint32_t SerialChecker::toInt32(){
 }
 
 /**
- * @brief      Sends an ACK char followed by the ETX char.
+ * @brief      Sends an Ack char followed by the ETX char.
  */
-void SerialChecker::sendACK(){
-    HSerial->println(ACK);
+void SerialChecker::sendAck(){
+    HSerial->println(Ack);
 }
 
 /**
- * @brief      Sends an NAK char followed by the ETX char.
+ * @brief      Sends an Nak char followed by the ETX char.
  */
-void SerialChecker::sendNAK(){
-    HSerial->println(NAK);
+void SerialChecker::sendNak(){
+    HSerial->println(Nak);
 }
 
 /**

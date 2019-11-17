@@ -15,33 +15,14 @@ enum class checksumTypeEnum{ SpellmanMPS, Readable8bitChars };
  *              SerialChecker can be used to check incoming messages  
  */
 class SerialChecker{
-private:
-    uint32_t baudrate = 250000;
-    HardwareSerial* HSerial;
-    bool useChecksum = false;
-    checksumTypeEnum checksumType = checksumTypeEnum::Readable8bitChars; 
-    bool useACKNAK = false;
-    bool useSTX = false;
-    bool requireSTX = false;
-    bool receiveStarted = true;
-    uint8_t msgMinLen = 1;
-    uint8_t msgMaxLen = 13;
-    char STX = '$';
-    char ETX = '\n'; 
-    char ACK = 'A';//6; Acknowledge char
-    char NAK = 'N';//21; Not Acknowledge char
-    uint8_t msgIndex;
-    uint8_t msgLen;
-    char* message;
-
 public:
     SerialChecker(); // defaults to message of length 13, Serial and baudrate of 250000 
     SerialChecker(uint16_t msgMaxLen, HardwareSerial& HSerial, uint32_t baudrate);
     ~SerialChecker();
     void init();
-    void disableACKNAK();
-    void enableACKNAK();
-    void enableACKNAK(char ACK, char NAK);
+    void disableAckNak();
+    void enableAckNak();
+    void enableAckNak(char Ack, char Nak);
     void disableChecksum();
     void enableChecksum();
     void setChecksumType(checksumTypeEnum checksumType);
@@ -50,11 +31,14 @@ public:
     void disableSTX();
     void setETX(char ETX);
     uint8_t check();
+    char* getAddress();
     char* getMsg();
     char* getMsg(uint8_t startIndex);
     uint8_t getMsgLen();
     void setMsgMinLen(uint8_t msgMinLen);
     void setMsgMaxLen(uint8_t msgMaxLen);
+    void setAddressLen(uint8_t len);
+    uint8_t getAddressLen();
     bool contains(char* snippet, uint8_t startIndex);
     bool contains(const char* snippet);
     char calcChecksum(char* rawMessage, int len);
@@ -71,8 +55,8 @@ public:
     uint16_t toInt16();
     uint32_t toInt32(uint8_t startIndex); // reads until end of message
     uint32_t toInt32(); // reads from first numeric or minus sign
-    void sendACK(); // sends an acknowledge char
-    void sendNAK(); // sends a not acknowledge char
+    void sendAck(); // sends an acknowledge char
+    void sendNak(); // sends a not acknowledge char
     void print(char* message);
     void print(char c);
     void print(uint8_t n);
@@ -94,6 +78,28 @@ public:
     void println(int32_t n);
     void println(float n);
     void println(double n);
+private:
+    uint32_t baudrate = 250000;
+    HardwareSerial* HSerial;
+    bool useChecksum = false;
+    checksumTypeEnum checksumType = checksumTypeEnum::Readable8bitChars; 
+    bool useAckNak = false;
+    bool useSTX = false;
+    bool requireSTX = false;
+    bool receiveStarted = true;
+    
+    uint8_t msgMinLen = 1;
+    uint8_t msgMaxLen = 13;
+    char STX = '$';
+    char ETX = '\n'; 
+    char Ack = 'A';//6; Acknowledge char
+    char Nak = 'N';//21; Not Acknowledge char
+    uint8_t msgIndex;
+    uint8_t msgLen;
+    char* message; // message excluding the address section, if present
+    char* rawMessage; // the full message including the address section, if present
+    uint8_t addressLen = 0;
+    char* address;
 };
 
 #endif
