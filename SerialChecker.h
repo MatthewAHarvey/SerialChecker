@@ -30,8 +30,12 @@ public:
     void enableSTX(bool requireSTX, char STX);
     void disableSTX();
     void setETX(char ETX);
+    void setAllowCR(bool allowCR);
+    bool getAllowCR();
     uint8_t check();
     char* getAddress();
+    char* getRawMsg();
+    uint8_t getRawMsgLen();
     char* getMsg();
     char* getMsg(uint8_t startIndex);
     uint8_t getMsgLen();
@@ -87,6 +91,7 @@ private:
     bool useSTX = false;
     bool requireSTX = false;
     bool receiveStarted = true;
+    bool allowCR = false;
     
     uint8_t msgMinLen = 1;
     uint8_t msgMaxLen = 13;
@@ -95,7 +100,7 @@ private:
     char Ack = 'A';//6; Acknowledge char
     char Nak = 'N';//21; Not Acknowledge char
     uint8_t msgIndex;
-    uint8_t msgLen;
+    uint8_t rawMsgLen;
     char* message; // message excluding the address section, if present
     char* rawMessage; // the full message including the address section, if present
     uint8_t addressLen = 0;

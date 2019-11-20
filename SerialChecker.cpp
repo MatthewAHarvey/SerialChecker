@@ -135,6 +135,24 @@ void SerialChecker::setETX(char ETX){
 }
 
 /**
+ * @brief      Sets whether \r carriage return chars are valid. In the case where we are receiving a println() message from another arduino, the message will be terminated with \r\n, i.e. two end chars. This will break checksum checking and number conversion. By default, \r chars are just removed. They aren't human readable anyway... Regardless of how this flag is set, \r carriage returns could still be used as the ETX message termination char.
+ *
+ * @param[in]  allowCR  Indicates if \r carriage returns are allowed
+ */
+void SerialChecker::setAllowCR(bool allowCR){
+    this->allowCR = allowCR;
+}
+
+/**
+ * @brief      Gets the allow carriage return \r flag.
+ *
+ * @return     The \r carriage return allowed flag.
+ */
+bool SerialChecker::getAllowCR(){
+    return allowCR;
+}
+
+/**
  * @brief      Call this function as often as you like to check for new messages. Valid messages cause the function to return the length of received message. This is also available by calling getMsgLen(). If no message, or an incomplete message is received, tt transfers the partial message (any message not terminated by an ETX char) from the arduino's serial buffer to this class's message buffer and returns a 0. 
  * 
  * If the message is too long or below the minimum length, it returns a 0 and deletes the message. 
@@ -158,8 +176,10 @@ uint8_t SerialChecker::check(){
             }
             else if(in != ETX && msgIndex < msgMaxLen){
                 //add to message
-                rawMessage[msgIndex] = in;
-                msgIndex++;
+                if((in != '\r') || allowCR){
+                    rawMessage[msgIndex] = in;
+                    msgIndex++;
+                }
                 // HSerial->println("Adding to message");
             }
             else if(in == ETX){
@@ -170,29 +190,29 @@ uint8_t SerialChecker::check(){
                 if(msgIndex >= msgMinLen){ // make sure message is long enough
                     // HSerial->println("Long enough");
                     if(useChecksum){
-                        msgLen = msgIndex - 1;
-                        char msgChecksum = rawMessage[msgLen];
-                        rawMessage[msgLen] = '\0';
-                        //HSerial->println(calcChecksum(message, msgLen));
-                        if(msgChecksum == calcChecksum(rawMessage, msgLen)){
+                        rawMsgLen = msgIndex - 1;
+                        char msgChecksum = rawMessage[rawMsgLen];
+                        rawMessage[rawMsgLen] = '\0';
+                        //HSerial->println(calcChecksum(message, rawMsgLen));
+                        if(msgChecksum == calcChecksum(rawMessage, rawMsgLen)){
                             //parseMessage();
                             msgIndex = 0;
                             if(requireSTX){
                                 receiveStarted = false;
                             }
-                            return msgLen;
+                            return rawMsgLen;
                         }
                         else if(useAckNak){
                             HSerial->println(Nak);
                         }
                     }
                     else{
-                        msgLen = msgIndex;
+                        rawMsgLen = msgIndex;
                         msgIndex = 0;
                         if(requireSTX){
                             receiveStarted = false;
                         }
-                        return msgLen;
+                        return rawMsgLen;
                     }
                 }
                 else if(useAckNak){
@@ -243,6 +263,24 @@ char* SerialChecker::getAddress(){
 }
 
 /**
+ * @brief      Gets the raw message. This is the full message including the address if there is one.
+ *
+ * @return     The raw message.
+ */
+char* SerialChecker::getRawMsg(){
+    return rawMessage;
+}
+
+/**
+ * @brief      Gets the raw message length. This is the length of the full message including the address if there is one.
+ *
+ * @return     The raw message length.
+ */
+uint8_t SerialChecker::getRawMsgLen(){
+    return rawMsgLen;
+}
+
+/**
  * @brief      Gets the contents of the message buffer. The message buffer is updated if new chars are received by check().
  *
  * @return     The message buffer which is null terminated.
@@ -268,7 +306,7 @@ char* SerialChecker::getMsg(uint8_t startIndex){
  * @return     The message length.
  */
 uint8_t SerialChecker::getMsgLen(){
-    return msgLen;
+    return rawMsgLen - addressLen;
 }
 
 /**
@@ -512,7 +550,7 @@ float SerialChecker::toFloat(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < msgLen - addressLen; i++) 
+    for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
     {
         if(message[i] == '.'){
             units = false;
@@ -568,7 +606,7 @@ uint8_t SerialChecker::toInt8(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < msgLen - addressLen; i++) 
+    for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
     {
         number *= 10;
         number += (message[i] -'0');
@@ -614,7 +652,7 @@ uint16_t SerialChecker::toInt16(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < msgLen - addressLen; i++) 
+    for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
     {
         number *= 10;
         number += (message[i] -'0');
@@ -662,7 +700,7 @@ uint32_t SerialChecker::toInt32(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < msgLen - addressLen; i++) 
+    for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
     {
         number *= 10;
         number += (message[i] -'0');
