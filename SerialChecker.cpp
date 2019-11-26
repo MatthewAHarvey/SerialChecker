@@ -378,20 +378,38 @@ bool SerialChecker::contains(char* snippet, uint8_t startIndex){
  *
  * @return     Returns true if the snippet test char array is present and false if not.
  */
-bool SerialChecker::contains(const char* snippet){
+bool SerialChecker::contains(char* snippet){
     // check if the shippet is present starting at index 0.
     // snippet char array must be null terminated.
-    const uint8_t startIndex = 0;
-    int i = 0;
-    const char* p = snippet;
-    while(*p){
-        if(*p != message[startIndex + i++]){
-            return false;
-        }
-        p++;
-    }
-    return true;
+    return contains(snippet, 0);
 }
+
+/**
+ * @brief      Check to see if the received message contains a char (uint8_t). With this function the user can check to see what type of message has been sent.
+ *
+ * @param[in]  c      The char to be compared at the index given in the received message.
+ * @param[in]  index  The index at which to test the char match in the message.
+ *
+ * @return     Returns true if the char c is present in the message.
+ */
+bool SerialChecker::contains(const char& c, uint8_t index){
+    if(message[index] == c){
+        return true;
+    }
+    return false;
+}
+
+/* Check to see if the received message contains a char (uint8_t) at the start of the message. With this function the user can check to see what type of message has been sent.
+ *
+ * @param[in]  c      The char to be compared at the start of the received message.
+ *
+ * @return     Returns true if the char c is present at the start of the message.
+ */
+bool SerialChecker::contains(const char& c){
+    return contains(c, 0);
+}
+
+
 
 /**
  * @brief      Calculates a checksum of the rawMessage array of length len using which ever algorithm is set to be used by the setChecksumType() function. There are currently two options. 
@@ -534,6 +552,61 @@ char SerialChecker::chksm8bitAllReadableChars(char* rawMessage){
 //     return checksum
 
 /**
+ * @brief      Sets the check conversion flag. When converting strings of chars to int or float types, checks to see whether the char is '0' to '9', or a '.' in the case of float conversion. If a non valid char is found, the conversion ends. This allows follow-up fields in the message to be used after the number is sent.
+ *
+ * @param[in]  checkConversion  The check conversion
+ */
+// void SerialChecker::setCheckConversion(bool checkConversion){
+//     this->checkConversion = checkConversion;
+// }
+
+/**
+ * @brief      Gets the check conversion flag. See setCheckConversion(bool checkConversion) for details.
+ *
+ * @return     The check conversion flag.
+ */
+// bool SerialChecker::getCheckConversion(){
+//     return checkConversion;
+// }
+
+// /**
+//  * @brief      Gets the number type and returns it as an enum. The char can be an interger '0' to '9', a minus sign '-', a decimal place '.' or not a number char.
+//  *
+//  * @param[in]  c     { parameter_description }
+//  *
+//  * @return     The number type.
+//  */
+// charNumTypeEnum SerialChecker::getNumType(const char& c){
+//     if( (c >= '0') && (c <= '9') ){
+//         return charNumTypeEnum::Integer;
+//     }
+//     else if(c == '-'){
+//         return charNumTypeEnum::MinusSign;
+//     }
+//     else if(c == '.'){
+//         return charNumTypeEnum::DecPoint;
+//     }
+//     return charNumTypeEnum::NaN;
+// }
+
+// /**
+//  * @brief      Determines whether the specified char, c, is number character. '0' to '9' and '-'' for minus sign and '.'' for decimal point are valid. 
+//  *
+//  * @param[in]  c     The char to check.
+//  *
+//  * @return     True if the specified c is number character, False otherwise.
+//  */
+// bool SerialChecker::isNumChar(const char& c){
+//     if( (c >= '0') && (c <= '9') ){
+//         return true;
+//     }
+//     else if( (c == '-') || (c == '.') ){
+//         return true;
+//     }
+//     return false;
+// }
+
+/**
  * @brief      Converts the message in the message buffer starting at startIndex to a float
  *
  * @param[in]  startIndex  The start indexc
@@ -550,27 +623,51 @@ float SerialChecker::toFloat(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
-    {
-        if(message[i] == '.'){
+    // for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
+    // {
+    //     if(message[i] == '.'){
+    //         units = false;
+    //     }
+    //     else{
+    //         if(units){
+    //             number *= 10.0;
+    //             number += float(message[i] -'0');
+    //         }
+    //         else{
+    //             number += float(message[i] - '0') * pow(0.1, decimalN);
+    //             decimalN++;
+    //         }
+    //     }
+    // }
+    while(message[startIndex]){
+        if(message[startIndex] == '.'){
             units = false;
         }
-        else{
+        else if( (message[startIndex] >= '0' && message[startIndex] <= '9') ){
             if(units){
                 number *= 10.0;
-                number += float(message[i] -'0');
+                number += float(message[startIndex] -'0');
             }
             else{
-                number += float(message[i] - '0') * pow(0.1, decimalN);
+                number += float(message[startIndex] - '0') * pow(0.1, decimalN);
                 decimalN++;
             }
         }
+        else{
+            break;
+        }
+        startIndex++;
     }
     if(negative){
         number *= -1.0;
     }
     return number;
 }
+// Sketch uses 7006 bytes (22%) of program storage space. Maximum is 30720 bytes.
+// Global variables use 353 bytes (17%) of dynamic memory, leaving 1695 bytes for local variables. Maximum is 2048 bytes.
+// Sketch uses 7008 bytes (22%) of program storage space. Maximum is 30720 bytes.
+// Global variables use 354 bytes (17%) of dynamic memory, leaving 1694 bytes for local variables. Maximum is 2048 bytes.
+// 
 
 /**
  * @brief      Converts the message in the message buffer to a float
@@ -582,10 +679,13 @@ float SerialChecker::toFloat(){
     bool negative = false;
     uint8_t startIndex = 0;
     while(message[startIndex]){
-        if((message[startIndex] == '-') || 
-            (message[startIndex] >= '0' && message[startIndex] <= '9')){
+        if((message[startIndex] == '-') || (message[startIndex] >= '0' && message[startIndex] <= '9')){
             break;
         }
+        // charNumTypeEnum numType = getNumType(message[startIndex]);
+        // if(numType == charNumTypeEnum::Integer || numType == charNumTypeEnum::MinusSign){
+        //     break
+        // } 
         startIndex++;
     }
     return toFloat(startIndex);
@@ -606,11 +706,21 @@ uint8_t SerialChecker::toInt8(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
-    {
-        number *= 10;
-        number += (message[i] -'0');
+    while(message[startIndex]){
+        if( (message[startIndex] >= '0' && message[startIndex] <= '9') ){
+            number *= 10;
+            number += (message[startIndex] -'0');
+        }
+        else{
+            break;
+        }
+        startIndex++;
     }
+    // for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
+    // {
+    //     number *= 10;
+    //     number += (message[i] -'0');
+    // }
     if(negative){
         number *= -1;
     }
@@ -652,14 +762,20 @@ uint16_t SerialChecker::toInt16(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
-    {
-        number *= 10;
-        number += (message[i] -'0');
-        Serial.print(message[i]);
-        Serial.print(": ");
-        Serial.println(number);
-        
+    // for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
+    // {
+    //     number *= 10;
+    //     number += (message[i] -'0');        
+    // }
+    while(message[startIndex]){
+        if( (message[startIndex] >= '0' && message[startIndex] <= '9') ){
+            number *= 10;
+            number += (message[startIndex] -'0');
+        }
+        else{
+            break;
+        }
+        startIndex++;
     }
     if(negative){
         number *= -1;
@@ -700,10 +816,20 @@ uint32_t SerialChecker::toInt32(uint8_t startIndex){
         negative = true;
         startIndex++;
     }
-    for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
-    {
-        number *= 10;
-        number += (message[i] -'0');
+    // for(int i = startIndex; i < rawMsgLen - addressLen; i++) 
+    // {
+    //     number *= 10;
+    //     number += (message[i] -'0');
+    // }
+    while(message[startIndex]){
+        if( (message[startIndex] >= '0' && message[startIndex] <= '9') ){
+            number *= 10;
+            number += (message[startIndex] -'0');
+        }
+        else{
+            break;
+        }
+        startIndex++;
     }
     if(negative){
         number *= -1;

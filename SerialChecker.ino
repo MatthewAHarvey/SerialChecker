@@ -40,10 +40,13 @@ void loop(){
             sc.println(sc.toFloat());
         }
         else if(sc.contains("Calc")){
-            sc.println(sc.calcChecksum(sc.getMsg()));
+            sc.println(sc.calcChecksum(sc.getRawMsg()));
         }
         else if(sc.contains("M")){
-            sc.println(sc.getMsg(3));
+            sc.println(sc.getMsg());
+        }
+        else if(sc.contains("R")){
+            sc.println(sc.getRawMsg());
         }
         else if(sc.contains("EE")){
             sc.sendAck();
