@@ -4,6 +4,25 @@
 #include<arduino.h>
 #include<HardwareSerial.h>
 
+/**
+ * @brief      Borrowing from https://github.com/synfinatic/AnySerial to get USB and HardwareSerial working
+ *              Need an enum to tell what type of serial is used
+ */
+enum class serialTypes{ USB, HardWare, ATMEGAXXU4 };
+
+/**
+ * @brief      Borrowing from https://github.com/synfinatic/AnySerial to get USB and HardwareSerial working
+ *              Need this typedef thingy to tell which type of port is used.
+ */
+typedef union {
+    HardwareSerial *hardware;
+#ifdef USBserial_h_
+    usb_serial_class *usb;
+#endif
+#ifdef USBCON
+    Serial_ *atmegaXXu4;
+#endif
+} portType;
 
 /**
  * @brief      Different types of checksum algorithm can be used. At the moment the choice is limited to just two simple ones that only produce a limited set of printable chars.
@@ -16,8 +35,19 @@ enum class checksumTypeEnum{ SpellmanMPS, Readable8bitChars };
  */
 class SerialChecker{
 public:
-    SerialChecker(); // defaults to message of length 13, Serial and baudrate of 250000 
+    // SerialChecker(); // defaults to message of length 13, Serial and baudrate of 250000 
     SerialChecker(uint16_t msgMaxLen, HardwareSerial& HSerial, uint32_t baudrate);
+    SerialChecker(HardwareSerial& port);
+    // SerialChecker(); // defaults to message of length 13, Serial and baudrate of 250000 
+    SerialChecker(HardwareSerial& port, uint32_t baudrate);
+    #ifdef USBserial_h_
+    SerialChecker(usb_serial_class& port);
+    SerialChecker(usb_serial_class& port, uint32_t baudrate);
+    #endif
+    #ifdef USBCON // I think this is for atmega32u4 based arduinos
+    SerialChecker(Serial_& port);
+    SerialChecker(Serial_& port, uint32_t baudrate);
+    #endif
     ~SerialChecker();
     void init();
     void disableAckNak();
@@ -90,7 +120,9 @@ public:
     void println(double n);
 private:
     uint32_t baudrate = 250000;
-    HardwareSerial* HSerial;
+    serialTypes serialType;
+    portType port;
+
     bool useChecksum = false;
     checksumTypeEnum checksumType = checksumTypeEnum::Readable8bitChars; 
     bool useAckNak = false;
@@ -111,6 +143,14 @@ private:
     char* rawMessage; // the full message including the address section, if present
     uint8_t addressLen = 0;
     char* address;
+
+    #ifdef USBserial_h_
+    uint8_t checkUSBSerial();
+    #endif
+    #ifdef USBCON
+    uint8_t checkATMEGAXXU4Serial();
+    #endif
+    uint8_t checkHardwareSerial();
 };
 
 #endif

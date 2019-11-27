@@ -3,10 +3,43 @@
 /**
  * @brief      Constructs the object. Dynamically creates a char array to hold message buffers. Assigns the the default arduino serial port. 
  */
-SerialChecker::SerialChecker(){
+// SerialChecker::SerialChecker(){
+//     this->serialType = serialTypes::HardWare;
+//     this->port.hardware = &Serial;
+//     rawMessage = new char[msgMaxLen];
+//     message = rawMessage;
+// }
+
+/**
+ * @brief      Constructs the object. Dynamically creates a char array to hold message buffers. Assigns the the default arduino serial port. 
+ */
+// SerialChecker::SerialChecker(){
+//     message = new char[msgMaxLen];
+//     // this->HSerial = &Serial;
+//     this->serialType = serialTypes::HardWare;
+//     this->port.hardware = &Serial;
+// }
+SerialChecker::SerialChecker(HardwareSerial& port){
+    serialType = serialTypes::HardWare;
+    this->port.hardware = &port;
     rawMessage = new char[msgMaxLen];
     message = rawMessage;
-    this->HSerial = &Serial;
+}
+
+/**
+ * @brief      Constructs the object. As above but lets user choose serial port and baudrate.
+ *
+ * @param[in]  msgMaxLen  The message maximum length
+ * @param      HSerial    The serial port. Can be Serial, Serial1, Serial2, Serial3 for an Arduino Mega (Atmega 2560).
+ * @param[in]  baudrate   The baudrate
+ */
+SerialChecker::SerialChecker(HardwareSerial& port, uint32_t baudrate){
+    this->serialType = serialTypes::HardWare;
+    this->port.hardware = &port;
+    this->baudrate = baudrate;
+    rawMessage = new char[msgMaxLen];
+    message = rawMessage;
+    
 }
 
 /**
@@ -18,25 +51,74 @@ SerialChecker::SerialChecker(){
  */
 SerialChecker::SerialChecker(uint16_t msgMaxLen, HardwareSerial& HSerial, uint32_t baudrate){
     this->msgMaxLen = msgMaxLen;
-    this->HSerial = &HSerial;
     this->baudrate = baudrate;
     rawMessage = new char[msgMaxLen];
     message = rawMessage;
 }
+
+// USBSerial
+#ifdef USBserial_h_
+SerialChecker::SerialChecker(usb_serial_class& port){
+    this->serialType = serialTypes::USB;
+    this->port.usb = &port;
+    rawMessage = new char[msgMaxLen];
+    message = rawMessage;
+}
+
+SerialChecker::SerialChecker(usb_serial_class& port, uint32_t baudrate) {
+    // this->msgMaxLen = msgMaxLen;
+    // this->HSerial = &HSerial;
+    this->serialType = serialTypes::USB;
+    this->port.usb = &port;
+    this->baudrate = baudrate;
+    // message = new char[msgMaxLen];
+}
+#endif
+
+#ifdef USBCON // I think this is for atmega32u4 based arduinos
+SerialChecker::SerialChecker(Serial_& port){
+    serialType = serialTypes::ATMEGAXXU4;
+    this->port.atmegaXXu4 = &port;
+    rawMessage = new char[msgMaxLen];
+    message = rawMessage;
+}
+
+SerialChecker::SerialChecker(Serial_& port, uint32_t baudrate){
+    this->serialType = serialTypes::ATMEGAXXU4;
+    this->port.atmegaXXu4 = &port;
+    this->baudrate = baudrate;
+    rawMessage = new char[msgMaxLen];
+    message = rawMessage;
+}
+#endif
 
 /**
  * @brief      Destroys the object and frees the memory used by message buffer
  */
 SerialChecker::~SerialChecker(){
     delete [] rawMessage;
+    delete [] address;
 }
 
 /**
  * @brief      This is functionally the same as Serial.begin(baudrate);
  */
 void SerialChecker::init(){
-    HSerial->begin(baudrate); 
-    // HSerial->println("Connected to SerialChecker test.");
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->begin(baudrate);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->begin(baudrate);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->begin(baudrate);
+            break;
+    }
 }
 
 /**
@@ -166,8 +248,27 @@ bool SerialChecker::getAllowCR(){
  * @return     A uint8_t value is returned representing the length of the message received, excluding the STX start char if used, the checksum char if used, or the ETX end char.
  */
 uint8_t SerialChecker::check(){
-    while(HSerial->available()) {
-        char in = HSerial->read();
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            return checkUSBSerial();
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            return checkATMEGAXXU4Serial();
+            break;
+    #endif
+        case serialTypes::HardWare:
+            return checkHardwareSerial();
+            break;
+    }
+}
+
+#ifdef USBserial_h_
+uint8_t SerialChecker::checkUSBSerial()(){
+    while(port.usb->available()) {
+        char in = port.usb->read();
         // HSerial->println(in);
         if(receiveStarted){
             if(useSTX && in == STX){
@@ -203,7 +304,7 @@ uint8_t SerialChecker::check(){
                             return rawMsgLen;
                         }
                         else if(useAckNak){
-                            HSerial->println(Nak);
+                            port.usb->println(Nak);
                         }
                     }
                     else{
@@ -216,7 +317,7 @@ uint8_t SerialChecker::check(){
                     }
                 }
                 else if(useAckNak){
-                    HSerial->println(Nak);
+                    port.usb->println(Nak);
                 }
                 // reset megIndex for next message
                 msgIndex = 0;
@@ -226,7 +327,7 @@ uint8_t SerialChecker::check(){
                 msgIndex = 0;
                 // HSerial->println("Too long");
                 if(useAckNak){
-                    HSerial->println(Nak);
+                    port.usb->println(Nak);
                 }
             } 
         }
@@ -236,13 +337,175 @@ uint8_t SerialChecker::check(){
             }
             else if(in == '\n'){
                 if(useAckNak){
-                    HSerial->println(Nak);
+                    port.usb->println(Nak);
                 }
             }
         }
     }
     return 0;
 }
+#endif
+
+#ifdef USBCON
+uint8_t SerialChecker::checkATMEGAXXU4Serial(){
+    while(port.atmegaXXu4->available()) {
+        char in = port.atmegaXXu4->read();
+        // HSerial->println(in);
+        if(receiveStarted){
+            if(useSTX && in == STX){
+                msgIndex = 0;
+                // HSerial->println("STX");
+            }
+            else if(in != ETX && msgIndex < msgMaxLen){
+                //add to message
+                if((in != '\r') || allowCR){
+                    rawMessage[msgIndex] = in;
+                    msgIndex++;
+                }
+                // HSerial->println("Adding to message");
+            }
+            else if(in == ETX){
+                // message complete so calculate the checksum and compare it
+                // HSerial->println("ETX");
+                rawMessage[msgIndex] = '\0';
+                // HSerial->println(msgIndex);
+                if(msgIndex >= msgMinLen){ // make sure message is long enough
+                    // HSerial->println("Long enough");
+                    if(useChecksum){
+                        rawMsgLen = msgIndex - 1;
+                        char msgChecksum = rawMessage[rawMsgLen];
+                        rawMessage[rawMsgLen] = '\0';
+                        //HSerial->println(calcChecksum(message, rawMsgLen));
+                        if(msgChecksum == calcChecksum(rawMessage, rawMsgLen)){
+                            //parseMessage();
+                            msgIndex = 0;
+                            if(requireSTX){
+                                receiveStarted = false;
+                            }
+                            return rawMsgLen;
+                        }
+                        else if(useAckNak){
+                            port.atmegaXXu4->println(Nak);
+                        }
+                    }
+                    else{
+                        rawMsgLen = msgIndex;
+                        msgIndex = 0;
+                        if(requireSTX){
+                            receiveStarted = false;
+                        }
+                        return rawMsgLen;
+                    }
+                }
+                else if(useAckNak){
+                    port.atmegaXXu4->println(Nak);
+                }
+                // reset megIndex for next message
+                msgIndex = 0;
+            }
+            else{
+                // message too long so scrap it and start again.
+                msgIndex = 0;
+                // HSerial->println("Too long");
+                if(useAckNak){
+                    port.atmegaXXu4->println(Nak);
+                }
+            } 
+        }
+        else{
+            if(in == STX){
+                receiveStarted = true;
+            }
+            else if(in == '\n'){
+                if(useAckNak){
+                    port.atmegaXXu4->println(Nak);
+                }
+            }
+        }
+    }
+    return 0;
+}
+#endif
+
+uint8_t SerialChecker::checkHardwareSerial(){
+    while(port.hardware->available()) {
+        char in = port.hardware->read();
+        // HSerial->println(in);
+        if(receiveStarted){
+            if(useSTX && in == STX){
+                msgIndex = 0;
+                // HSerial->println("STX");
+            }
+            else if(in != ETX && msgIndex < msgMaxLen){
+                //add to message
+                if((in != '\r') || allowCR){
+                    rawMessage[msgIndex] = in;
+                    msgIndex++;
+                }
+                // HSerial->println("Adding to message");
+            }
+            else if(in == ETX){
+                // message complete so calculate the checksum and compare it
+                // HSerial->println("ETX");
+                rawMessage[msgIndex] = '\0';
+                // HSerial->println(msgIndex);
+                if(msgIndex >= msgMinLen){ // make sure message is long enough
+                    // HSerial->println("Long enough");
+                    if(useChecksum){
+                        rawMsgLen = msgIndex - 1;
+                        char msgChecksum = rawMessage[rawMsgLen];
+                        rawMessage[rawMsgLen] = '\0';
+                        //HSerial->println(calcChecksum(message, rawMsgLen));
+                        if(msgChecksum == calcChecksum(rawMessage, rawMsgLen)){
+                            //parseMessage();
+                            msgIndex = 0;
+                            if(requireSTX){
+                                receiveStarted = false;
+                            }
+                            return rawMsgLen;
+                        }
+                        else if(useAckNak){
+                            port.hardware->println(Nak);
+                        }
+                    }
+                    else{
+                        rawMsgLen = msgIndex;
+                        msgIndex = 0;
+                        if(requireSTX){
+                            receiveStarted = false;
+                        }
+                        return rawMsgLen;
+                    }
+                }
+                else if(useAckNak){
+                    port.hardware->println(Nak);
+                }
+                // reset megIndex for next message
+                msgIndex = 0;
+            }
+            else{
+                // message too long so scrap it and start again.
+                msgIndex = 0;
+                // HSerial->println("Too long");
+                if(useAckNak){
+                    port.hardware->println(Nak);
+                }
+            } 
+        }
+        else{
+            if(in == STX){
+                receiveStarted = true;
+            }
+            else if(in == '\n'){
+                if(useAckNak){
+                    port.hardware->println(Nak);
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 
 /**
  * @brief      Returns the address that the message was sent to as a c-style char string. Do not call this if the @addressLen variable is set to the default of zero.
@@ -861,14 +1124,42 @@ uint32_t SerialChecker::toInt32(){
  * @brief      Sends an Ack char followed by the ETX char.
  */
 void SerialChecker::sendAck(){
-    HSerial->println(Ack);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(Ack);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(Ack);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(Ack);
+            break;
+    }
 }
 
 /**
  * @brief      Sends an Nak char followed by the ETX char.
  */
 void SerialChecker::sendNak(){
-    HSerial->println(Nak);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(Nak);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(Nak);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(Nak);
+            break;
+    }
 }
 
 /**
@@ -877,7 +1168,21 @@ void SerialChecker::sendNak(){
  * @param      message  The c style string message
  */
 void SerialChecker::print(char* message){
-    HSerial->print(message);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(message);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(message);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(message);
+            break;
+    }
 }
 
 /**
@@ -886,7 +1191,21 @@ void SerialChecker::print(char* message){
  * @param[in]  c     The char to print
  */
 void SerialChecker::print(char c){
-    HSerial->print(c);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(c);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(c);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(c);
+            break;
+    }
 }
 
 /**
@@ -895,7 +1214,21 @@ void SerialChecker::print(char c){
  * @param[in]  n     The uint8_t to print
  */
 void SerialChecker::print(uint8_t n){
-    HSerial->print(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(n);
+            break;
+    }
 }
 
 /**
@@ -904,7 +1237,21 @@ void SerialChecker::print(uint8_t n){
  * @param[in]  n     The uint16_t to print
  */
 void SerialChecker::print(uint16_t n){
-    HSerial->print(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(n);
+            break;
+    }
 }
 
 /**
@@ -913,7 +1260,21 @@ void SerialChecker::print(uint16_t n){
  * @param[in]  n     The uint32_t to print
  */
 void SerialChecker::print(uint32_t n){
-    HSerial->print(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(n);
+            break;
+    }
 }
 
 /**
@@ -922,7 +1283,21 @@ void SerialChecker::print(uint32_t n){
  * @param[in]  n     The int8_t to print
  */
 void SerialChecker::print(int8_t n){
-    HSerial->print(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(n);
+            break;
+    }
 }
 
 /**
@@ -931,7 +1306,21 @@ void SerialChecker::print(int8_t n){
  * @param[in]  n     The int16_t to print
  */
 void SerialChecker::print(int16_t n){
-    HSerial->print(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(n);
+            break;
+    }
 }
 
 /**
@@ -940,7 +1329,21 @@ void SerialChecker::print(int16_t n){
  * @param[in]  n     The int32_t to print
  */
 void SerialChecker::print(int32_t n){
-    HSerial->print(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(n);
+            break;
+    }
 }
 
 /**
@@ -949,7 +1352,21 @@ void SerialChecker::print(int32_t n){
  * @param[in]  n     The float to print
  */
 void SerialChecker::print(float n){
-    HSerial->print(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(n);
+            break;
+    }
 }
 
 /**
@@ -958,7 +1375,21 @@ void SerialChecker::print(float n){
  * @param[in]  n     The float to print
  */
 void SerialChecker::print(double n){
-    HSerial->print(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->print(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->print(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->print(n);
+            break;
+    }
 }
 
 /**
@@ -967,7 +1398,21 @@ void SerialChecker::print(double n){
  * @param      message  The c-style string to print
  */
 void SerialChecker::println(char* message){
-    HSerial->println(message);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(message);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(message);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(message);
+            break;
+    }
 }
 
 /**
@@ -976,7 +1421,21 @@ void SerialChecker::println(char* message){
  * @param[in]  c     The char to print
  */
 void SerialChecker::println(char c){
-    HSerial->println(c);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(c);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(c);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(c);
+            break;
+    }
 }
 
 /**
@@ -985,7 +1444,21 @@ void SerialChecker::println(char c){
  * @param[in]  n     The uint8_t to print
  */
 void SerialChecker::println(uint8_t n){
-    HSerial->println(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(n);
+            break;
+    }
 }
 
 /**
@@ -994,7 +1467,21 @@ void SerialChecker::println(uint8_t n){
  * @param[in]  n     The uint16_t to print
  */
 void SerialChecker::println(uint16_t n){
-    HSerial->println(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(n);
+            break;
+    }
 }
 
 /**
@@ -1003,7 +1490,21 @@ void SerialChecker::println(uint16_t n){
  * @param[in]  n     The uint32_t to print
  */
 void SerialChecker::println(uint32_t n){
-    HSerial->println(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(n);
+            break;
+    }
 }
 
 /**
@@ -1012,7 +1513,21 @@ void SerialChecker::println(uint32_t n){
  * @param[in]  n     The int8_t to print
  */
 void SerialChecker::println(int8_t n){
-    HSerial->println(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(n);
+            break;
+    }
 }
 
 /**
@@ -1021,7 +1536,21 @@ void SerialChecker::println(int8_t n){
  * @param[in]  n     The int16_t to print
  */
 void SerialChecker::println(int16_t n){
-    HSerial->println(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(n);
+            break;
+    }
 }
 
 /**
@@ -1030,7 +1559,21 @@ void SerialChecker::println(int16_t n){
  * @param[in]  n     The int32_t to print
  */
 void SerialChecker::println(int32_t n){
-    HSerial->println(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(n);
+            break;
+    }
 }
 
 /**
@@ -1039,7 +1582,21 @@ void SerialChecker::println(int32_t n){
  * @param[in]  n     The float to print
  */
 void SerialChecker::println(float n){
-    HSerial->println(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(n);
+            break;
+    }
 }
 
 /**
@@ -1048,5 +1605,19 @@ void SerialChecker::println(float n){
  * @param[in]  n     The float to print
  */
 void SerialChecker::println(double n){
-    HSerial->println(n);
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println(n);
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println(n);
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println(n);
+            break;
+    }
 }

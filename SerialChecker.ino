@@ -1,6 +1,6 @@
 #include "SerialChecker.h"
 
-SerialChecker sc;
+SerialChecker sc(Serial);
 
 void setup(){
     sc.init();
