@@ -29,6 +29,7 @@ SerialChecker::SerialChecker(uint16_t msgMaxLen, HardwareSerial& HSerial, uint32
  */
 SerialChecker::~SerialChecker(){
     delete [] rawMessage;
+    delete [] address;
 }
 
 /**
