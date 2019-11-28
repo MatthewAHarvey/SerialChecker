@@ -142,8 +142,6 @@ private:
     char* message = nullptr; // message excluding the address section, if present
     char* rawMessage = nullptr; // the full message including the address section, if present
     uint8_t rawMsgLen;
-    char* message; // message excluding the address section, if present
-    char* rawMessage; // the full message including the address section, if present
     uint8_t addressLen = 0;
     char* address = nullptr;
 

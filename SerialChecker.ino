@@ -1,9 +1,11 @@
 #include "SerialChecker.h"
 
 SerialChecker sc(Serial);
+SerialChecker sc1(Serial1);
 
 void setup(){
     sc.init();
+    sc1.init();
     sc.setAddressLen(1);
     Serial.println("Connected to SerialChecker.ino");
     // Can now print messages via the SerialChecker class instance itself:
