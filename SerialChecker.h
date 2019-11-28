@@ -138,11 +138,14 @@ private:
     char Ack = 'A';//6; Acknowledge char
     char Nak = 'N';//21; Not Acknowledge char
     uint8_t msgIndex;
+    uint8_t msgLen;
+    char* message = nullptr; // message excluding the address section, if present
+    char* rawMessage = nullptr; // the full message including the address section, if present
     uint8_t rawMsgLen;
     char* message; // message excluding the address section, if present
     char* rawMessage; // the full message including the address section, if present
     uint8_t addressLen = 0;
-    char* address;
+    char* address = nullptr;
 
     #ifdef USBserial_h_
     uint8_t checkUSBSerial();
@@ -151,6 +154,8 @@ private:
     uint8_t checkATMEGAXXU4Serial();
     #endif
     uint8_t checkHardwareSerial();
+    
+
 };
 
 #endif

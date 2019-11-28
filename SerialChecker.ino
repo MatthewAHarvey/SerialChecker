@@ -9,9 +9,10 @@ void setup(){
     // Can now print messages via the SerialChecker class instance itself:
     sc.println("Still connected to SerialChecker.ino...");
     // You can use Serial.print or the class instance method since they are the same. The advantage of using the class instance message becomes apparent when you have multiple serial comms targets.
+    sc.setETX('\r');
+    //sc.enableAckNak('%', '*');// Ack = '%', Nak = '*'. Nak is sent automatically if bad message received. Ack must be sent manually with sc.sendAck();. Nak can also be sent with sendNak();
+    //sc.enableSTX(false, '£'); // STX use is not enforced but will be recognised as '£'. This does mean that '£' can't be used as a character in the message...
     
-    sc.enableAckNak('%', '*');// Ack = '%', Nak = '*'. Nak is sent automatically if bad message received. Ack must be sent manually with sc.sendAck();. Nak can also be sent with sendNak();
-    sc.enableSTX(false, '£'); // STX use is not enforced but will be recognised as '£'. This does mean that '£' can't be used as a character in the message...
 }
 
 void loop(){
