@@ -9,7 +9,7 @@
  * @brief      Different types of checksum algorithm can be used. At the moment the choice is limited to just two simple ones that only produce a limited set of printable chars.
  */
 enum class checksumTypeEnum{ SpellmanMPS, Readable8bitChars };
-
+// enum class charNumTypeEnum{ NaN, DecPoint, MinusSign, Integer };
 /**
  * @brief      SerialChecker is an Arduino based class for the easy handling of serial messages.
  *              SerialChecker can be used to check incoming messages  
@@ -30,8 +30,12 @@ public:
     void enableSTX(bool requireSTX, char STX);
     void disableSTX();
     void setETX(char ETX);
+    void setAllowCR(bool allowCR);
+    bool getAllowCR();
     uint8_t check();
     char* getAddress();
+    char* getRawMsg();
+    uint8_t getRawMsgLen();
     char* getMsg();
     char* getMsg(uint8_t startIndex);
     uint8_t getMsgLen();
@@ -40,13 +44,19 @@ public:
     void setAddressLen(uint8_t len);
     uint8_t getAddressLen();
     bool contains(char* snippet, uint8_t startIndex);
-    bool contains(const char* snippet);
+    bool contains(char* snippet);
+    bool contains(const char& c, uint8_t startIndex);
+    bool contains(const char& c);
     char calcChecksum(char* rawMessage, int len);
     char calcChecksum(char* rawMessage);
     char chksmSpellmanMPS(char* rawMessage, int len);
     char chksmSpellmanMPS(char* rawMessage);
     char chksm8bitAllReadableChars(char* rawMessage, int len);
     char chksm8bitAllReadableChars(char* rawMessage);
+    // void setCheckConversion(bool checkConversion);
+    // bool getCheckConversion();
+    // charNumTypeEnum getNumType(const char& c);
+    // bool isNumChar(const char& c);
     float toFloat(uint8_t startIndex);
     float toFloat();
     uint8_t toInt8(uint8_t startIndex);
@@ -87,7 +97,8 @@ private:
     bool useSTX = false;
     bool requireSTX = false;
     bool receiveStarted = true;
-    
+    bool allowCR = false;
+    // bool checkConversion = false;
     uint8_t msgMinLen = 1;
     uint8_t msgMaxLen = 13;
     char STX = '$';
@@ -98,6 +109,9 @@ private:
     uint8_t msgLen;
     char* message = nullptr; // message excluding the address section, if present
     char* rawMessage = nullptr; // the full message including the address section, if present
+    uint8_t rawMsgLen;
+    char* message; // message excluding the address section, if present
+    char* rawMessage; // the full message including the address section, if present
     uint8_t addressLen = 0;
     char* address = nullptr;
 };
