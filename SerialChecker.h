@@ -64,6 +64,7 @@ public:
     bool getAllowCR();
     uint8_t check();
     char* getAddress();
+    char getAddressChar();
     char* getRawMsg();
     uint8_t getRawMsgLen();
     char* getMsg();
@@ -73,6 +74,7 @@ public:
     void setMsgMaxLen(uint8_t msgMaxLen);
     void setAddressLen(uint8_t len);
     uint8_t getAddressLen();
+    bool addressMatch(char* addressToMatch);
     bool contains(char* snippet, uint8_t startIndex);
     bool contains(char* snippet);
     bool contains(const char& c, uint8_t startIndex);
@@ -118,6 +120,7 @@ public:
     void println(int32_t n);
     void println(float n);
     void println(double n);
+    void println();
 private:
     uint32_t baudrate = 250000;
     serialTypes serialType;

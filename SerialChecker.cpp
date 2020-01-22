@@ -462,6 +462,7 @@ uint8_t SerialChecker::checkHardwareSerial(){
                             if(requireSTX){
                                 receiveStarted = false;
                             }
+                            getAddress(); // Call this to load the address in to the address array.
                             return rawMsgLen;
                         }
                         else if(useAckNak){
@@ -474,6 +475,7 @@ uint8_t SerialChecker::checkHardwareSerial(){
                         if(requireSTX){
                             receiveStarted = false;
                         }
+                        getAddress(); // Call this to load the address in to the address array.
                         return rawMsgLen;
                     }
                 }
@@ -524,6 +526,15 @@ char* SerialChecker::getAddress(){
         return '\0';
     }
 }
+
+/**
+ * @brief      Returns the address char. DO NOT USE THIS IF THE ADDRESS c-style string IS MORE THAN 1 CHAR LONG.
+ *
+ * @return     The address char.
+ */
+ char SerialChecker::getAddressChar(){
+    return *address;
+ }
 
 /**
  * @brief      Gets the raw message. This is the full message including the address if there is one.
@@ -611,6 +622,25 @@ void SerialChecker::setAddressLen(uint8_t len){
  */
 uint8_t SerialChecker::getAddressLen(){
     return addressLen;
+}
+
+/**
+ * @brief      Check to see if the received address matches an address being tested for.
+ *
+ * @param[in]  addressToMatch  The address to match against the received message address.
+ *
+ * @return     Returns true if the test address matches the received address.
+ */
+bool SerialChecker::addressMatch(char* addressToMatch){
+    int i = 0;
+    const char* p = addressToMatch;
+    while(*p){
+        if(*p != address[i++]){
+            return false;
+        }
+        p++;
+    }
+    return true;
 }
 
 /**
@@ -1618,6 +1648,29 @@ void SerialChecker::println(double n){
     #endif
         case serialTypes::HardWare:
             port.hardware->println(n);
+            break;
+    }
+}
+
+/**
+ * @brief      Same as Serial's .println method.
+ *
+ * @param[in]       No parameter in so just prints \n
+ */
+void SerialChecker::println(){
+    switch (serialType) {
+    #ifdef USBserial_h_
+        case serialTypes::USB:
+            port.usb->println();
+            break;
+    #endif
+    #ifdef USBCON
+        case serialTypes::ATMEGAXXU4:
+            port.atmegaXXu4->println();
+            break;
+    #endif
+        case serialTypes::HardWare:
+            port.hardware->println();
             break;
     }
 }

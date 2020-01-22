@@ -55,5 +55,15 @@ void loop(){
             sc.sendAck();
             sc.sendNak();
         }
+        else if(sc.contains("SC1")){
+            sc.println("Checksum turned on.");
+            sc.enableChecksum();
+        }
+        else if(sc.contains("SC0")){ 
+        //the checksum is calculated for the rawMessage, i.e., the address is included in the calculation. 
+        // If there is no address, SC0g will turn it off. If there is a 1 char address, 1SC0: will turn it off.
+            sc.println("Checksum turned off.");
+            sc.disableChecksum();
+        }
     }
 }
